@@ -11,6 +11,7 @@
 
 \newcommand\supervisorA[1]{\gdef\@supervisorA{#1}}
 \newcommand\supervisorB[1]{\gdef\@supervisorB{#1}}
+\newcommand\department[1]{\gdef \@department{#1}}
 \newcommand\institute[1]{\gdef \@institute{#1}}
 \newcommand\faculty[1]{\gdef \@faculty{#1}}
 \newcommand\university[1]{\gdef \@university{#1}}
@@ -50,6 +51,7 @@
     \vfill
 
     \begin{center}
+    \@department\\
     \@institute\\
     \@faculty\\
     \@university
