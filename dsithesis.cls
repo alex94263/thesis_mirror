@@ -16,7 +16,6 @@
 \newcommand\faculty[1]{\gdef \@faculty{#1}}
 \newcommand\university[1]{\gdef \@university{#1}}
 \newcommand\email[1]{\gdef \@email{#1}}
-\newcommand\thesistype[1]{\gdef \@thesistype{#1}}
 \newcommand\degree[1]{\gdef \@degree{#1}}
 \newcommand\logo[1]{\gdef\@logo{#1}} % tobias
 
@@ -37,7 +36,8 @@
     {\huge \bfseries \@title}
     \end{spacing}
 
-    \large \@thesistype
+    \large Thesis zur Erlangung des Grades\\
+    \@degree
     \end{center}
 
     \vspace{0.8cm}
