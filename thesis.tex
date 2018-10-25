@@ -1,0 +1,64 @@
+\documentclass[]{dsithesis}
+
+
+\usepackage{authoraftertitle}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{csquotes}
+\usepackage{bera}
+\usepackage[T1]{fontenc}
+
+\usepackage[style=alphabetic,backend=biber]{biblatex}
+\addbibresource{references.bib}
+
+\begin{document}
+
+\author{TBA: Author}
+\title{TBA: Title}
+\date{TBA: Date}
+\email{TBA: Email address}
+\thesistype{Bachelorthesis}
+%\thesistype{Masterthesis}
+\degree{Bachelor of Science (B. Sc.)}
+%\degree{Master of Science (M. Sc.)}
+\supervisorA{Prof. Dr. Florian Tschorsch}
+\supervisorB{TBA: Second supervisor}
+
+\institute{Institut für Softwaretechnik und Theoretische Informatik}
+\faculty{Fakultät Elektrotechnik und Informatik}
+\university{Technische Universität Berlin}
+
+\maketitlepage
+
+\frontmatter
+
+\input{assertion}
+
+\cleardoublepage
+
+\input{abstract}
+
+\cleardoublepage
+
+\tableofcontents
+\cleardoublepage
+
+\mainmatter
+\input{introduction}
+\input{model}
+\input{contribution}
+\input{evaluation}
+\input{relatedwork}
+\input{conclusion}
+
+\backmatter
+
+\cleardoublepage
+
+\backmatter
+\printbibliography
+    
+\end{document}
