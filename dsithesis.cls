@@ -22,7 +22,7 @@
 
 
 \newcommand{\maketitlepage}{
-\begin{titlepage}
+    \begin{titlepage}
     \newgeometry{margin=1in}
     \pagestyle{plain}
     \thispagestyle{empty}
@@ -58,22 +58,21 @@
     \end{center}
 
     \vspace{0.6cm}
-        \begin{center}
+    \begin{center}
     \textbf{Gutachter:}\\
-        \@supervisorA\\
-        \@supervisorB\\
-
-        \end{center}
+    \@supervisorA\\
+    \@supervisorB
+    \end{center}
 
     \vspace{0.2cm}
 
     \begin{center}
     \@date
-        \end{center}
+    \end{center}
     \restoregeometry
-\end{titlepage}
+    \end{titlepage}
     \newpage
     \thispagestyle{empty}
     \newpage
-        \onehalfspacing
+    \onehalfspacing
 }
