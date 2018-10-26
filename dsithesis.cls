@@ -67,12 +67,11 @@
     \vspace{0.2cm}
 
     \begin{center}
-    \@date
+    eingereicht am: \@date
     \end{center}
     \restoregeometry
     \end{titlepage}
     \newpage
     \thispagestyle{empty}
     \newpage
-    \onehalfspacing
 }
