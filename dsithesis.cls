@@ -17,6 +17,7 @@
 \newcommand\university[1]{\gdef \@university{#1}}
 \newcommand\email[1]{\gdef \@email{#1}}
 \newcommand\degree[1]{\gdef \@degree{#1}}
+\newcommand\course[1]{\gdef \@course{#1}}
 \newcommand\logo[1]{\gdef\@logo{#1}} % tobias
 
 
@@ -37,7 +38,8 @@
     \end{spacing}
 
     \large Thesis zur Erlangung des Grades\\
-    \@degree
+    \@degree\\
+    im Studiengang \@course
     \end{center}
 
     \vspace{0.8cm}
