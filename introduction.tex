@@ -1,1 +1,41 @@
 \chapter{Introduction}\label{chap:introduction}
+Bitcoin is the most prominent example of a decentralized cryptocurrency. 
+
+\textcolor{red}{noch mehr über bitcoin allgemein? "trivia" wie groß etc.	}
+
+It utilizes proof-of-work blockchain as a distributed ledger technology.
+It includes transactions into so called blocks. Blocks possess a unique ID and reference a previous block~\citeauthor{tschorsch}. This construct builds a directed acyclic graph. The root of this tree is also called genesis block. Thus, every block directly or indirectly references the genesis block.
+
+
+A correct block includes a nonce, which solves a cryptographic puzzle. The challenge is to alter the nonce until the hash of the set of transactions, the hash of the previous block and the nonce produce a partial hash collision. Essentially, the hash has to be smaller than some threshold value, which is also referred to as difficulty~\citeauthor{tschorsch}.
+Thus, Bitcoin binds block creation to the computational ressources a peer possesses, since the partial hash collision can only be solved through trial and error. The correctness of the block is easily verifiable through third parties. Thus, Bitcoin ensures a fair leader election through this process.
+
+Bitcoin uses a peer-to-peer network to propagate the mined blocks in the system. The network is unstructured as every peer tries to maintain a minimum of eight connections and performs neighbor discovery over DNS, IRC and asking neighbors~\citeauthor{tschorsch}. Blocks are propagated over the peer-to-peer layer through flooding.
+
+Once a miner mines a block through solving a cryptographic puzzle, he can publish the block and receives rewards through transaction fees and mining rewards. This provides an incentive to the miner to generate as many correct blocks as possible~\citeauthor{1}.
+
+Consensus is established over the longest chain rule~\citeauthor{1}. This means that the block ending the longest chain determines the state of the blockchain. This also implies that a miner only receives rewards, if his mined blocks are included in the main chain. Thus, a miner wants to produce as many correct blocks, that are part of the main chain, as possible. A protocol maximizing reward gain is thus incentive compatible.
+A miner produces a relative share of blocks proportionally to his relative share of computational power of the whole network. Thus, a miner should produce a relative share of the main chain proportional to his relative share of computational power.
+
+The original protocol, also called honest mining, assumes publishing blocks immediately after mining. Honest mining is assumed to be incentive compatible. It follows that no miner can earn disproportionate rewards by deviating from the protocol.
+Consequently, earning disproportionate rewards through deviation from the honest mining protocol, would disprove Bitcoin's incentive compatability claim.
+
+One protocol deviation is selfish mining, which was first introduced by~\citeauthor{eyal}.
+Selfish Mining is a vulnerability, which aims at increasing revenue through block withholding. The selfish miner aims at producing a greater relative share of blocks of the main chain, than the relative share of computational power of the network. Therefore, selfish mining violates Bitcoins incentive compatibility claim, as it offers a more profitable mining protocol than honest mining. This is problematic, since it not only breaks fair leader election, but also results in potentially longer confirmation times for transactions of users.
+
+Selfish mining is a statistical attack. To analyze profitibality it is therefore beneficial to analytically model selfish mining. In order to study the impact of deviating mining strategies it is very important to represent the blockchain network as close to reality as possible, to estimate realistic results.
+
+Blockchain Mining is commonly modelled through markov decision processes.
+Thus, revenue gains can be analytically estimated. \citeauthor{eyal} first described a selfish mining model. \citeauthor{optimal_sm} further extended the model to consider all possible actions a selfish miner can perceive. This markovian model was widely used and adopted in other research directions studying other aspects of selfish mining. \citeauthor{deepDiveSM} extended the model even further to analyze multiple selfish miners. 
+
+The block creation interval is much bigger than the block propagation time and is therefore modelled as instantaneous~\cite{optimal_sm}, disregarding block propagation effects. Since most research, which is concerned with selfish mining, builts on top of the model presented by \citeauthor{optimal_sm} networking factors remain unassessed. Assuming that the underlying network does influence the system built on top, this master thesis aims to analyze the impact of networking effects on selfish mining.
+
+
+
+
+
+
+%Bitcoin most prominent bla ?\\
+%bitcoin facts etc.\\
+%selfish mining\\
+%selfish mining models ansprechen\\

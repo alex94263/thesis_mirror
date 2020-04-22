@@ -9,18 +9,18 @@
 \usepackage{bera}
 \usepackage[T1]{fontenc}
 
-\usepackage[style=alphabetic,backend=biber]{biblatex}
-\addbibresource{references.bib}
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+
 
 \begin{document}
 
-\author{TBA: Author}
-\title{TBA: Title}
-\date{TBA: Date}
-\email{TBA: Email address}
-\degree{Bachelor of Science (B. Sc.)}
-\course{Informatik}
-%\degree{Master of Science (M. Sc.)}
+\author{Alexander Wagner}
+
+\date{TBA}
+\email{wagner.2@campus.tu-berlin.de}
+\course{Computer Science}
+\degree{Master of Science (M. Sc.)}
 \supervisorA{Prof. Dr. Florian Tschorsch}
 \supervisorB{TBA: Second supervisor}
 
@@ -28,7 +28,7 @@
 \institute{Institut für Softwaretechnik und Theoretische Informatik}
 \faculty{Fakultät Elektrotechnik und Informatik}
 \university{Technische Universität Berlin}
-
+\title{Selfish Mining and Networking Effects}
 \maketitlepage
 \makeatletter
 
@@ -46,6 +46,7 @@
 \cleardoublepage
 
 \mainmatter
+\setlength\parindent{0pt}
 \input{introduction}
 \input{model}
 \input{contribution}
@@ -58,6 +59,6 @@
 \cleardoublepage
 
 \backmatter
-\printbibliography[heading=bibintoc]
+\bibliography{references.bib}
     
 \end{document}
