@@ -1,4 +1,29 @@
 \chapter{Related Work}\label{chap:relatedwork}
+
+Selfish mining is a statistical attack. To analyze profitibality it is therefore beneficial to analytically model selfish mining. In order to study the impact of deviating mining strategies it is very important to represent the blockchain network as close to reality as possible, to estimate realistic results.
+
+Blockchain Mining is most commonly modelled through markov decision processes.
+A markovian process is a discrete time stochastic control process. It is generally used to model decision making, where the outcomes are influenced by random processes and the decision of the decision maker.
+For the case of selfish mining the selfish miner chooses his next action, so he controls the decision making process. The rest of the network, the block arrival and block propagation can be modelled by stochastic processes. 
+
+Utilizing a markovian model revenue gains can be analytically estimated. \citeauthor{eyal} first described a selfish mining model. \citeauthor{optimal_sm} further extended the model to consider all possible actions a selfish miner can perceive. This markovian model was widely used and adopted in other research directions studying other aspects of selfish mining. \citeauthor{deepDiveSM} extended the model even further to analyze multiple selfish miners. 
+
+The block creation interval is much bigger than the block propagation time and is therefore modelled as instantaneous~\cite{optimal_sm}, disregarding block propagation effects. Since most research, which is concerned with selfish mining, builts on top of the model presented by \citeauthor{optimal_sm} networking factors remain unassessed. Assuming that the underlying network does influence the system built on top, this master thesis aims to analyze the impact of networking effects on selfish mining.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 andere netzwerk analysen paper\\
 andere selfish mining strategien und deren analyse etc.\\
 andere currencies und selfish mining\\ 
