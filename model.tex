@@ -12,9 +12,10 @@ Vertices are associated with peers, such that $v_i$ represents peer $p_i \in P$.
 
 Additionally, a directed acyclic graph $G_{p_i}(t) = (B_{G_{p_i}}(t),E_{G_{p_i}}(t))$ is associated with each peer $p_i$, at each point in time $t \in \mathbb{R+}$.
 The vertex set $B_{G_{p_i}}(t) \subset \mathbb{N}$ represents the blocks known of peer $p_i$ at time $t$. The associated edge set of $E_{G_{p_i}}(t)$ represents references between blocks.
-The following holds true for shorter notations:
-$B_G(t) = \cup_{i=1}^N B_{G_{p_i}}(t) \texttt{ and } E_G(t) = \cup_{i=1}^N E_{G_{p_i}}(t)$
-\textcolor{red}{aber warum eigentlich? macht die zeitabhängigkeit das ganze nicht kaputt?}
+The following holds true for shorter notations\footnote{aber warum eigentlich? macht die zeitabhängigkeit das ganze nicht kaputt?}:
+\begin{equation}
+B_G(t) = \cup_{i=1}^N B_{G_{p_i}}(t) \texttt{ and } E_G(t) = \cup_{i=1}^N E_{G_{p_i}}(t)
+\end{equation}
 
 Furthermore, the following equations hold for the principle of blockchains:
 \begin{equation}
@@ -57,7 +58,7 @@ Note that the set $O_{p_i} \cap L_{p_i}(t)$ is non empty. This constructs a simp
 Every block will have exactly one outgoing reference, according to some deterministic rule~\citep{gopalan}. \citeauthor{gopalan} assume that the block with the lower index number will be chosen.
 
 
-\paragraph{model extension -- selfish mining inclusion}
+\paragraph{model extension -- selfish mining inclusion}\label{selfishmodel}
 The selfish mining attack is described as a peer executing a protocol deviant from honest mining~\citep{eyal}. Therefore a selfish miner can be modelled according to the model described in \ref{gopalan} through altering the reference selection and communication process. The reference selection process is policy driven, and can thus be modified by providing a new selfish policy. 
 
 Peer $SM \in P$ has an associated policy slightly different to \ref{policy}. Note that to follow the Tree Policy~\citep{gopalan}, a deterministic rule has to be established for the case that $|O_{SM} \cap L_{SM}(t)| > 1$.
@@ -70,17 +71,17 @@ Assume that $SM$ has the knowledge of the set of blocks mined through him, $M_{S
 It then follows that $|L'_{SM}(t)|=1$.
 This modified tree policy sets references according to the original selfish mining protocol described by \citeauthor{eyal}.
 
-The second aspect to be modified is the communication process. It will be shown that through modification of the communication process the number of cases, where $|O_{p_i} \cap L_{SM}(t)| > 1$ increases, thus, making \ref{smpolicy} impactful.
+The second aspect to be modified is the communication process. 
 
 Key idea of selfish mining is block withholding. As such the selfish miner not only possesses a blockchain representation of the form $G_{p_i}(t) = (B_{G_{p_i}}(t),E_{G_{p_i}}(t))$, but rather $G_{p_i}(t) = G_{SM_{public}}(t)\subseteq G_{SM_{private}}(t)$, where $G_{SM_{private}}(t)\backslash G_{SM_{public}}(t)$ represents blocks mined but unpublished by the selfish miner.
 
 \begin{figure}
 \includegraphics[width=\linewidth]{figures/model_vis.png}
-\caption{\textcolor{red}{keine finale skizze, nochmal überarbeiten etc.}}
+\caption{Abstract representation of model entities and communication processes}
 \label{fig:model_vis}
 \end{figure}
 
-The concept has been visualized in 
+The concept has been visualized in \ref{fig:model_vis}.
 
 $G_{SM_{comm}}(t)$, a third representation, is used to update other peers just as described in \ref{gopalan}. $G_{SM_{private}}(t)$ interacts with $G_{SM_{public}}(t)$ through an instantaneous update process $U$.
 The first task of $U$ is to ensure that $G_{SM_{public}}(t)\subseteq G_{SM_{private}}(t)$ holds true, meaning $U$ updates $G_{SM_{private}}(t)$, when new blocks arrive to $G_{SM_{public}}(t)$.
@@ -107,8 +108,8 @@ $U$ can then be characterized through three kind of update actions. This can be 
 \item Assume $t \in t_{dec}$ and $s(t) = -1$, then $U$ updates $G_{SM_{comm}}(t)$, such that $G_{SM_{public}}(t) \subseteq G_{SM_{comm}}(t)$.
 \item Assume $t \in t_{inc}$, $s(t) = 1$, $s(f_{-1}(t)) = 0$, $s(f_{-1}(t)^-) = 1$, then $U$ updates $G_{SM_{comm}}(t)$, such that it includes the subgraph induced by the nodes on the paths between $L'_{SM}(t)$ and ${0}$.
 \end{enumerate}
-
-\textcolor{red}{ kann man, darf man $T_{SM}$ modifizieren?}
+\footnote{kann man, darf man $T_{SM}$ modifizieren? Ich würde argumentieren nein}
+$T_{SM}$ represents the outgoing communications of the selfish miner. Since those are highly influenced by the receiving ends the selfish miner can not increase his communication capabilities bound to $T_{SM}$ in order to gain an advantage. However, influencial changes based on the structure of $H$ and the position of the selfish miner will be analyzed in the latter.
 
 
 

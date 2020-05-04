@@ -1,4 +1,30 @@
 \chapter{Contribution}\label{chap:contribution}
-Forschungsfrage etc --> aufschlüsseln\\
-Simulationen eingehen\\
-Model checking, messungen am bitcoin netzwerk mache, darauf eingehen\\
+The central goal of this master thesis is to analyze the impact of selfish mining as an attack on blockchain systems. 
+While it has been established that selfish mining imposes a threat on blockchain, it remains unassessed how big the impact is. 
+Selfish mining is highly influenced by networking effects. 
+Therefore, in order to assess the impact of selfish mining, analysis has to be performed in a model, which also captures the underlying network.
+Therefore, the model proposed by \citeauthor{gopalan} has been enhanced to model selfish mining behaviour in \ref{selfishmodel}.
+The relationship between selfish mining and networking effects can be charactized by a number of key questions.
+Those questions can be split up in two groups.
+The first group considers how the network influences selfish mining.
+Key aspects include:
+\begin{enumerate}
+\item \citet{xiao_modeling} show in their model that revenue gain and profitability threshhold correlates to betweenness centrality. Does this correlation also show \ref{selfishmodel}?
+\item Does a networking advantage increase revenue gain and profitability threshhold?
+\item Does a certain network topology influence selfish mining effectiveness?
+\end{enumerate}
+The second group considers how selfish mining influences the network.
+Key aspects include:
+\begin{enumerate}
+\item Does the network have a different throughput, if one peer is executing the selfish mining protocol?
+\item Does the network have a different block propagation time, if one peer is executing the selfish mining protocol?
+\item Does the network show different congestion peeks, if one peer is executing the selfish mining protocol?
+\item If the network shows congestion peeks, does it correlate to certain actions the selfish miner is performing?
+\end{enumerate}
+´
+
+
+
+
+
+
