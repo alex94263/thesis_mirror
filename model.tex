@@ -1,8 +1,62 @@
 \chapter{Model}\label{chap:model}
 In order to model networking effects and selfish mining, it is essential to capture network properties in an analytic model. The model can then be used to estimate selfish mining profitability.
 \citeauthor{gopalan} have introduced a new blockchain model, which captures network properties.
+\subsection{Bitcoin Mining Fundamentals}
+To understand selfish mining and its implications on network behavior it is essential to understand bitcoin mining in general.
+Bitcoin utilizes proof-of-work blockchain as a distributed ledger technology.
+It includes transactions into so called blocks. Blocks possess a unique ID and reference a previous block~\cite{tschorsch}. This construct builds a directed acyclic graph. The root of this tree is also called genesis block. Thus, every block directly or indirectly references the genesis block.
 
-\paragraph{Gopalan Model}\label{gopalan}
+A correct block includes a nonce, which solves a cryptographic puzzle. The challenge is to alter the nonce until the hash of the set of transactions, the hash of the previous block and the nonce produce a partial hash collision. Essentially, the hash has to be smaller than some threshold value, which is also referred to as difficulty~\cite{tschorsch}.
+Thus, Bitcoin binds block creation to the computational ressources a peer possesses, since the partial hash collision can only be solved through trial and error. The correctness of the block is easily verifiable through third parties. Thus, Bitcoin ensures a fair leader election through this process.
+
+Bitcoin uses a peer-to-peer network to propagate the mined blocks in the system. The network is unstructured as every peer tries to maintain a minimum of eight connections and performs neighbor discovery over DNS, IRC and asking neighbors~\cite{tschorsch}. Blocks are propagated over the peer-to-peer layer through flooding.
+
+Once a miner mines a block through solving a cryptographic puzzle, he can publish the block and receives rewards through transaction fees and mining rewards. This provides an incentive to the miner to generate as many correct blocks as possible~\cite{1}.
+
+Consensus is established over the longest chain rule~\cite{1}. This means that the block ending the longest chain determines the state of the blockchain. This also implies that a miner only receives rewards, if his mined blocks are included in the main chain. Thus, a miner wants to produce as many correct blocks, that are part of the main chain, as possible. A protocol maximizing reward gain is thus incentive compatible.
+A miner produces a relative share of blocks proportionally to his relative share of computational power of the whole network. Thus, a miner should produce a relative share of the main chain proportional to his relative share of computational power.
+
+The original protocol, also called honest mining, assumes publishing blocks immediately after mining. Honest mining is assumed to be incentive compatible. It follows that no miner can earn disproportionate rewards by deviating from the protocol.
+Consequently, earning disproportionate rewards through deviation from the honest mining protocol, would disprove Bitcoin's incentive compatability claim.
+
+\subsection{eyal model}\label{eyalmodel}
+One protocol deviation is selfish mining, which was first introduced by~\cite{eyal}.
+Selfish Mining is a vulnerability, which aims at increasing revenue through block withholding. The selfish miner aims at producing a greater relative share of blocks of the main chain, than the relative share of computational power of the network. Therefore, selfish mining violates Bitcoins incentive compatibility claim, as it offers a more profitable mining protocol than honest mining. This is problematic, since it not only breaks fair leader election, but also results in potentially longer confirmation times for transactions of users.
+~\citeauthor{eyal} model the network over a set of miners. A miner finds a subsequent block after a time interval that is exponentially distributed\cite{eyal}. They further define the revenue of a miner as his fraction of total blocks on the longest chain.
+The selfish miner withholds mined blocks~\cite{eyal}. This selfish miner now possesses a private chain, which differs from the publicly known chain. Based on the difference between those two chains, the selfish miner performs actions. 
+\begin{figure}
+\begin{center}
+\resizebox{.5\columnwidth}{!}{%
+  \begin{tikzpicture}
+    \node[sm circ] (0) {$0$};
+    \node[sm circ] (1)[right=1.2cm of 0] {$1$};
+    \node[sm circ] (2)[right=1.2cm of 1] {$2$};
+    \node[sm circ] (4)[above=0.5cm of 0] {$0^{\prime}$};
+
+   	\draw [arrow] (0.east) -- node[pos= 0.5, anchor=south] {\tiny $Mining$}(1.west);
+   	\draw [arrow] (1.north) |- node[pos=0.5, anchor=south] {\tiny $Competition$ $Publish$}(4.east);
+   	\draw [arrow] (2.south) -- +(0,-0.4) -| node[pos=0.3, anchor=south] {\tiny $Lead$ $Publish$}(0);
+   	\draw [arrow] (1.east) -- node[pos= 0.5, anchor=south] {\tiny $Mining$}(2.west);
+   	\draw [arrow] (4) -- node[pos=0.3,anchor=west] {\tiny $Publish/Adopt$}(0);
+   	
+\end{tikzpicture}
+}
+\end{center}
+   \caption{Abstract representation of state transtitions of eyal and sirer model for one selfish miner}
+\label{fig:eyal_model}
+
+\end{figure}
+For clarification the state space and actions are modelled in \ref{fig:eyal_model}. The numbers in the states indicate the lead of the private to the public chain. $s$ denotes the lead of the private chain compared to the public chain. We can identify a total of four different actions.
+\begin{itemize}
+\item $Mining$: This action means that the peer has mined block. Mining adds the block to the private chain. It therefore causes $s$ to increase.
+\item $Lead$ $Publish$: When $s$ increases to 2, the selfish miner will publish his private chain. It therefore causes $s$ to change from 2 to 0.
+\item $Competition$ $Publish$: When $s$ is 1 and the selfish miner receives a block from another peer, he will publish his block of the same height from the private chain instead of the received one, to compete against the other miner. This causes a state transition to $0'$.
+\item $Publish$: If the selfish miner is in state $0'$, he is in a competition situation.
+The selfish miner will immediately publish his next mined block. This will cause the selfish miner to transition to state $0$.
+\item $Adopt$: The selfish miner will adopt the main chain once he receives a new block in a competition situation.
+\end{itemize}
+
+\subsection{Gopalan Model}\label{gopalan}
 The model of \citeauthor{gopalan} consists of a set of peers $P$ connected through a peer-to-peer network. Peers add blocks to the blockchain through a process called mining. 
 
 The peer-to-peer network is modelled as an undirected Graph $H = (V,E)$.
@@ -12,7 +66,7 @@ Vertices are associated with peers, such that $v_i$ represents peer $p_i \in P$.
 
 Additionally, a directed acyclic graph $G_{p_i}(t) = (B_{G_{p_i}}(t),E_{G_{p_i}}(t))$ is associated with each peer $p_i$, at each point in time $t \in \mathbb{R+}$.
 The vertex set $B_{G_{p_i}}(t) \subset \mathbb{N}$ represents the blocks known of peer $p_i$ at time $t$. The associated edge set of $E_{G_{p_i}}(t)$ represents references between blocks.
-The following holds true for shorter notations\footnote{aber warum eigentlich? macht die zeitabhängigkeit das ganze nicht kaputt?}:
+The following holds true for shorter notations:
 \begin{equation}
 B_G(t) = \cup_{i=1}^N B_{G_{p_i}}(t) \texttt{ and } E_G(t) = \cup_{i=1}^N E_{G_{p_i}}(t)
 \end{equation}
@@ -58,7 +112,7 @@ Note that the set $O_{p_i} \cap L_{p_i}(t)$ is non empty. This constructs a simp
 Every block will have exactly one outgoing reference, according to some deterministic rule~\citep{gopalan}. \citeauthor{gopalan} assume that the block with the lower index number will be chosen.
 
 
-\paragraph{model extension -- selfish mining inclusion}\label{selfishmodel}
+\subsection{ extension -- selfish mining inclusion}\label{selfishmodel}
 The selfish mining attack is described as a peer executing a protocol deviant from honest mining~\citep{eyal}. Therefore a selfish miner can be modelled according to the model described in \ref{gopalan} through altering the reference selection and communication process. The reference selection process is policy driven, and can thus be modified by providing a new selfish policy. 
 
 Peer $SM \in P$ has an associated policy slightly different to \ref{policy}. Note that to follow the Tree Policy~\citep{gopalan}, a deterministic rule has to be established for the case that $|O_{SM} \cap L_{SM}(t)| > 1$.
@@ -72,44 +126,90 @@ It then follows that $|L'_{SM}(t)|=1$.
 This modified tree policy sets references according to the original selfish mining protocol described by \citeauthor{eyal}.
 
 The second aspect to be modified is the communication process. 
+Key idea of selfish mining is block withholding. The selfish miner possesses three blockchain representations. 
+\begin{itemize}
+\item $G_{SM_{public}}(t)$: which is updated by other peers.
+\item $G_{SM_{comm}}(t)$: which is used to update other peers.
+\item $G_{SM_{private}}(t)$: with the following relations:
+		\begin{itemize}
+		\item $G_{SM_{public}}(t)\subseteq G_{SM_{private}}(t)$.
+		\item $G_{SM_{private}}(t)\backslash G_{SM_{public}}(t)$ represents blocks mined but unpublished by the selfish miner.
+\end{itemize}		
+\end{itemize}
 
-Key idea of selfish mining is block withholding. As such the selfish miner not only possesses a blockchain representation of the form $G_{p_i}(t) = (B_{G_{p_i}}(t),E_{G_{p_i}}(t))$, but rather $G_{p_i}(t) = G_{SM_{public}}(t)\subseteq G_{SM_{private}}(t)$, where $G_{SM_{private}}(t)\backslash G_{SM_{public}}(t)$ represents blocks mined but unpublished by the selfish miner.
 
 \begin{figure}
-\includegraphics[width=\linewidth]{figures/model_vis.png}
-\caption{Abstract representation of model entities and communication processes}
+\begin{center}
+\resizebox{\columnwidth}{!}{%
+  \begin{tikzpicture}
+  \small
+    \node[sm node] (1) {$Selfish~Miner$};
+    \node(2) [left = 1cm of 1] {$Arrival~Process~A$};
+    
+    \node[block] (3) [above right = 0.6cm and 0.2cm]{$G_{SM_{public}}(t)$};
+    \node[block] (5) [ below =1.2cm of 3 ]{ $G_{SM_{comm}}(t)$ };
+	\node[block] (4) [left=0.6cm of 5]{$G_{SM_{private}}(t)$};    
+    
+    \node [cloud,fill=green!20, draw,very thick,cloud puffs=10,cloud puff arc=120, aspect=3, inner ysep=1em, right=1cm of 1](6) {$Other~Miners$};
+    
+   	
+   	\draw [arrow] (2) |- (4);
+   	\draw [arrow] (3) -| node[anchor=south] {$U_{pub-priv}$}(4);
+   	\draw [arrow] (4.south) -- +(0,-0.6) -| node[pos=0.3, anchor=south] {$U_{priv-com}$}(5);
+   	\draw [arrow] (6) |- node[pos=0.78,anchor=south] {$T_{p_i}$}(3);
+	\draw [arrow] (5) -| node[pos=0.22,anchor=south] {$T_{SM}$}(6);    
+\end{tikzpicture}
+}
+\end{center}
+   \caption{Abstract representation of model entities and communication processes}
 \label{fig:model_vis}
+
 \end{figure}
-
 The concept has been visualized in \ref{fig:model_vis}.
+A total number of five processes is used to let all entities interact with each other.
+\begin{itemize}
+\item $Arrival~Process~A$: Blocks arrive to the selfish miner over the external arrival process $A$.
 
-$G_{SM_{comm}}(t)$, a third representation, is used to update other peers just as described in \ref{gopalan}. $G_{SM_{private}}(t)$ interacts with $G_{SM_{public}}(t)$ through an instantaneous update process $U$.
-The first task of $U$ is to ensure that $G_{SM_{public}}(t)\subseteq G_{SM_{private}}(t)$ holds true, meaning $U$ updates $G_{SM_{private}}(t)$, when new blocks arrive to $G_{SM_{public}}(t)$.
+\item $T_{p_i}$: Ensures blocks from other peers are communicated to $G_{SM_{public}}(t)$.
+\item $U_{pub-priv}$: Ensures that $G_{SM_{public}}(t)\subseteq G_{SM_{private}}(t)$ holds true, meaning $U_{pub-priv}$ updates $G_{SM_{private}}(t)$, when new blocks arrive to $G_{SM_{public}}(t)$ from other peers.
+\item $U_{priv-com}$: Updates $G_{SM_{comm}}(t)$ according to $G_{SM_{private}}(t)$ and the selfish mining rules $S$.
 
-The second task of $U$ is updating $G_{SM_{comm}}(t)$ according to $G_{SM_{private}}(t)$, which is the heart of the selfish mining protocol described by \citep{eyal}.
+\item $T_{SM}$: Ensures other peers are updated with blocks from $G_{SM_{comm}}(t)$.
 
+\end{itemize}
+
+$S$ is a set of rules which describes how $G_{SM_{private}}(t)$ updates $G_{SM_{comm}}(t)$. The rules have to follow the state description of \citeauthor{eyal}\ref{eyalmodel}. Therefore we need a state variable describing the difference between private and public chain.
 Let $s$ be the state variable determining selfish mining actions~\citep{eyal}.
-
 Then $s$ can be described as a difference between $G_{SM_{private}}(t)$ and $G_{SM_{public}}(t)$.
 \begin{equation}
 max\_ dist(G_{p_i}(t)) := d(j,0), j \in L_{p_i}(t)
 \end{equation}
 \begin{equation}
+max\_ dist\_mined(G_{p_i}(t)) := d(j,0), j \in M_{p_i}(t)
+\end{equation}
+\begin{equation}
 s(t) := max\_ dist(G_{SM_{private}}(t)) - max\_ dist(G_{SM_{public}}(t))
 \end{equation}
-
+\begin{equation}
+s_{mined}(t) := max\_ dist\_mined(G_{SM_{private}}(t)) - max\_ dist(G_{SM_{public}}(t))
+\end{equation}
 Let $t_{inc}$ refer to the set of times, where $s$ increased and analogous $t_{dec}$ refer to the set of times, where $s$ decreased.
+Additionally, let $t'_{inc}$ refer to the set of times, where $s_{mined}$ increased and analogous $t'_{dec}$ refer to the set of times, where $s_{mined}$ decreased.
+Note that $s>0$, because $G_{SM_{public}}(t) \subseteq G_{SM_{private}}(t)$.
 Let $f_{-1}(t)$ be a function that outputs the point in time, where s changed the latest before $t$.
-$U$ can then be characterized through three kind of update actions. This can be used to model the selfish mining protocol desribed by \citeauthor{eyal}.
+$U_{priv-com}$ can then be characterized through four kind of update actions. Analogous to Subsection\ref{eyalmodel}, those actions are $Lead~Publish$, $Competition~Publish$, $Publish$ and $Adopt$. $Mining$, the fifth action described in Subsection\ref{eyalmodel}, is modelled through the arrival process.
+This can be used to model the selfish mining protocol desribed by \citeauthor{eyal}.
 \begin{enumerate}
-\small
-\item Assume $t \in t_{inc}$ and $s(t) \geq 2$, then $U$ updates $G_{SM_{comm}}(t)$, such that $G_{SM_{comm}}(t) = G_{SM_{private}}(t)$.
-\item Assume $t \in t_{dec}$ and $s(t) = 0$, then $U$ updates $G_{SM_{comm}}(t)$, such that it includes the subgraph induced by the nodes on the paths between $L'_{SM}(t)$ and ${0}$.
-\item Assume $t \in t_{dec}$ and $s(t) = -1$, then $U$ updates $G_{SM_{comm}}(t)$, such that $G_{SM_{public}}(t) \subseteq G_{SM_{comm}}(t)$.
-\item Assume $t \in t_{inc}$, $s(t) = 1$, $s(f_{-1}(t)) = 0$, $s(f_{-1}(t)^-) = 1$, then $U$ updates $G_{SM_{comm}}(t)$, such that it includes the subgraph induced by the nodes on the paths between $L'_{SM}(t)$ and ${0}$.
+\item $Lead~Publish$: Assume $t \in t_{inc}$ and $s(t) \geq 2$, then $U_{priv-com}$ updates $G_{SM_{comm}}(t)$, such that $G_{SM_{comm}}(t) = G_{SM_{private}}(t)$. 
+\item $Competition~Publish$: Assume $t \in t_{dec}$, $s(t) = 0$, $s(f_{-1}(t)) = 1$, $s(f_{-1}(t)^-) = 0$. This means that the selfish miner mined a block, did not publish it and now received a block from another of the same height. This leads to the competition scenario. Accordingly, $U_{priv-com}$ updates $G_{SM_{comm}}(t)$, such that it includes the subgraph induced by the nodes on the paths between $L'_{SM}(t)$ and ${0}$. This transitions to 
+\begin{equation}
+0'(t) \rightarrow \left( t \in t_{dec} \wedge s(t) = 0 \wedge s(f_{-1}(t)) = 1 \wedge s(f_{-1}(t)^-) = 0\right)
+\end{equation}
+\item $Publish$: Assume $0'(t^-)=\top$ and $t \in t_{inc}$, $U_{priv-com}$ updates $G_{SM_{comm}}(t)$, such that it includes the subgraph induced by the nodes on the paths between $L'_{SM}(t)$ and ${0}$.
+\item $Adopt$: Assume $0'(t^-)=\top$ and $s'(t)=-1$, then $U_{priv-com}$ updates $G_{SM_{comm}}(t)$, such that $G_{SM_{comm}}(t) = G_{SM_{private}}(t)$. 
+
 \end{enumerate}
-\footnote{kann man, darf man $T_{SM}$ modifizieren? Ich würde argumentieren nein}
-$T_{SM}$ represents the outgoing communications of the selfish miner. Since those are highly influenced by the receiving ends the selfish miner can not increase his communication capabilities bound to $T_{SM}$ in order to gain an advantage. However, influencial changes based on the structure of $H$ and the position of the selfish miner will be analyzed in the latter.
+
 
 
 

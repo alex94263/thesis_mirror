@@ -1,27 +1,16 @@
 \chapter{Introduction}\label{chap:introduction}
-Bitcoin is the most prominent example of a decentralized cryptocurrency. 
+Bitcoin is the most prominent example of a decentralized cryptocurrency~\cite{1}. Before the development of Bitcoin a decentralized cryptocurrency had been envisioned for many years. It is a system, where a ledger is kept consistent among multiple parties in a peer-to-peer network without the need of trust. It enables the deployment of electronic cash without a central authority figure like a bank.
+For this reason it is an enhancement to the currently established electronic banking system.
 
+ A consistent distributed ledger is essentially a consensus problem, which has to be solved in a cooperative, distributed manner. It is therefore a Byzantine Agreement problem~\cite{garay2015bitcoin}. Bitcoin assumes an honest majority in a public system~\cite{tschorsch}. Thus, the consistence and correctness of the ledger reduces to a voting problem. However, voting in a public distributed system remains a hard problem, especially considering sybil attacks~\cite{sybil}. Bitcoin reduces the effectiveness of sybil attacks by binding voting right to computational power.
+In order for a peer to participate in the system, he has to solve a cryptographic puzzle.
+This process, also known as mining, consumes the computational ressources of the peer. Since there would be no reason to waste computational ressources without gain, mining is incentivized. A miner receives a so called mining reward for mining a block. This incentivized process helps spreading the overall computational power of the network among multiple different parties, since every party is competing for mining rewards.
+Since mining is inherently constructed through incentives, miners will strive for the best strategy to maximize rewards. \citeauthor{eyal} show the existence of deviant mining protocols with greater rewards. Miners executing such protocols are called selfish miners. This imposes a threat, since it reduces the performance of the overall system. Additionally selfish miners obtain a greater voting power than their computational ressources allow and as a result tilt the honest majority balance.
 
-It utilizes proof-of-work blockchain as a distributed ledger technology.
-It includes transactions into so called blocks. Blocks possess a unique ID and reference a previous block~\cite{tschorsch}. This construct builds a directed acyclic graph. The root of this tree is also called genesis block. Thus, every block directly or indirectly references the genesis block.
+The central goal of this master thesis is to analyze the impact of selfish mining as an attack on blockchain systems. 
+While it has been established that selfish mining imposes a threat on blockchain, it remains unassessed how big the impact is. 
+Additionally, selfish mining is highly influenced by networking effects. 
+Therefore, in order to assess the impact of selfish mining, analysis has to be performed in a model, which also captures the underlying network.
 
-
-A correct block includes a nonce, which solves a cryptographic puzzle. The challenge is to alter the nonce until the hash of the set of transactions, the hash of the previous block and the nonce produce a partial hash collision. Essentially, the hash has to be smaller than some threshold value, which is also referred to as difficulty~\cite{tschorsch}.
-Thus, Bitcoin binds block creation to the computational ressources a peer possesses, since the partial hash collision can only be solved through trial and error. The correctness of the block is easily verifiable through third parties. Thus, Bitcoin ensures a fair leader election through this process.
-
-Bitcoin uses a peer-to-peer network to propagate the mined blocks in the system. The network is unstructured as every peer tries to maintain a minimum of eight connections and performs neighbor discovery over DNS, IRC and asking neighbors~\cite{tschorsch}. Blocks are propagated over the peer-to-peer layer through flooding.
-
-Once a miner mines a block through solving a cryptographic puzzle, he can publish the block and receives rewards through transaction fees and mining rewards. This provides an incentive to the miner to generate as many correct blocks as possible~\cite{1}.
-
-Consensus is established over the longest chain rule~\cite{1}. This means that the block ending the longest chain determines the state of the blockchain. This also implies that a miner only receives rewards, if his mined blocks are included in the main chain. Thus, a miner wants to produce as many correct blocks, that are part of the main chain, as possible. A protocol maximizing reward gain is thus incentive compatible.
-A miner produces a relative share of blocks proportionally to his relative share of computational power of the whole network. Thus, a miner should produce a relative share of the main chain proportional to his relative share of computational power.
-
-The original protocol, also called honest mining, assumes publishing blocks immediately after mining. Honest mining is assumed to be incentive compatible. It follows that no miner can earn disproportionate rewards by deviating from the protocol.
-Consequently, earning disproportionate rewards through deviation from the honest mining protocol, would disprove Bitcoin's incentive compatability claim.
-
-One protocol deviation is selfish mining, which was first introduced by~\cite{eyal}.
-Selfish Mining is a vulnerability, which aims at increasing revenue through block withholding. The selfish miner aims at producing a greater relative share of blocks of the main chain, than the relative share of computational power of the network. Therefore, selfish mining violates Bitcoins incentive compatibility claim, as it offers a more profitable mining protocol than honest mining. This is problematic, since it not only breaks fair leader election, but also results in potentially longer confirmation times for transactions of users.
-
-Studying the impact of selfish mining and other mining protocol deviations is necessary, because without proper risk assessment no effective countermeasures can be implemented.
 
 

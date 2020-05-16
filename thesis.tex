@@ -12,10 +12,17 @@
 \usepackage[square,numbers]{natbib}
 \bibliographystyle{abbrvnat}
 
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+\tikzset{sm node/.style={ellipse,fill=black!20,draw,very thick,minimum width=8cm,minimum height=5cm,inner sep=0pt},}
+\tikzset{sm circ/.style={circle,fill=black!20,draw,thick,minimum width=1cm,inner sep=0pt},}
+\tikzset{block/.style={rectangle,fill=red,draw,very thick,minimum width=2.5cm, minimum height=0.8cm,inner sep=0pt},align=left}
+\tikzstyle{arrow} = [very thick,->,>=stealth]
+
 
 \begin{document}
 
-\author{Alexander Wagner}
+\author{Alexander Wagner}´
 
 \date{TBA}
 \email{wagner.2@campus.tu-berlin.de}
@@ -34,7 +41,7 @@
 
 \frontmatter
 
-\input{assertion}
+\input{assertion}	
 
 \cleardoublepage
 
