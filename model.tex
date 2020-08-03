@@ -57,8 +57,8 @@ The selfish miner will immediately publish his next mined block. This will cause
 Executing this protocol leads to a strict revenue increase, if the mining power is greater than $33\%$ according to \citeauthor{eyal}~\cite{eyal}.
 
 
-\section{Gopalan Model}\label{gopalan}
-The model of \citeauthor{gopalan} consists of a set of peers $P$ connected through a peer-to-peer network. Peers add blocks to the blockchain through a process called mining. 
+\section{Blockchain Gossip Model}\label{gopalan}
+The Blockchain Gossip Model of \citeauthor{gopalan} consists of a set of peers $P$ connected through a peer-to-peer network. Peers add blocks to the blockchain through a process called mining. 
 The peer-to-peer network is modelled as an undirected Graph $H = (V,E)$.
 An edge $(i,j) \in E$ represents communication possibilities between $v_i \in V$ and $v_j \in V$. 
 The set of vertices is finite, such that $|V|=N \in \mathbb{N}$.
@@ -68,6 +68,7 @@ The vertex set $B_{G_{p_i}}(t) \subset \mathbb{N}$ represents the blocks known o
 The following holds true for shorter notations:
 \begin{equation}
 B_G(t) = \cup_{i=1}^N B_{G_{p_i}}(t) \texttt{ and } E_G(t) = \cup_{i=1}^N E_{G_{p_i}}(t)
+\label{unisondef}
 \end{equation}
 
 Furthermore, the following equations hold for the principle of blockchains:
@@ -108,7 +109,7 @@ Note that the set $O_{p_i} \cap L_{p_i}(t)$ is non empty. This constructs a simp
 Every block will have exactly one outgoing reference, according to some deterministic rule~\citep{gopalan}. \citeauthor{gopalan} assume that the block with the lower index number will be chosen.
 
 
-\section{Selfish Gopalan Model}\label{selfishmodel}
+\section{Extended Blockchain Gossip Model}\label{selfishmodel}
 The selfish mining attack is described as a peer executing a protocol deviant from honest mining~\citep{eyal}. Therefore a selfish miner can be modelled according to the model described in Subsection~\ref{gopalan} through altering the reference selection and communication process. The reference selection process is policy driven, and can thus be modified by providing a new selfish policy. 
 
 The first aspect to be modified is the communication process. 

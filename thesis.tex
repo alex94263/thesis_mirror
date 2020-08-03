@@ -10,6 +10,7 @@
 \usepackage[T1]{fontenc}
 
 \usepackage[square,numbers]{natbib}
+\usepackage{subcaption}
 \bibliographystyle{abbrvnat}
 
 \usepackage{tikz}
@@ -19,10 +20,11 @@
 \tikzset{block/.style={rectangle,fill=red,draw,very thick,minimum width=2.5cm, minimum height=0.8cm,inner sep=0pt},align=left}
 \tikzstyle{arrow} = [very thick,->,>=stealth]
 
+\newcommand{\gopalan}{~\citeauthor{gopalan}~\cite{gopalan}}
 
 \begin{document}
 
-\author{Alexander Wagner}´
+\author{Alexander Wagner}
 
 \date{TBA}
 \email{wagner.2@campus.tu-berlin.de}
@@ -37,7 +39,9 @@
 \university{Technische Universität Berlin}
 \title{Selfish Mining and Networking Effects}
 \maketitlepage
-\makeatletter
+´\makeatletter
+
+
 
 \frontmatter
 
