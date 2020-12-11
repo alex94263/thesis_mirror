@@ -1,1 +1,189 @@
 \chapter{Evaluation}\label{chap:evaluation}
+The following section utilizes the simulative implementation of the Blockchain Gossip Model to evaluate the relationship between selfish mining and networking effects. Additionally, the model will be validated against data provided by \gopalan and real world data of the Bitcoin system.
+\section{Simpy Blockchain Simulator}
+The core implementation is based on simpy~\cite{simpy}. Simpy is a discrete event simulator written in python. As a result the Simpy Blockchain Simulator is also written in python. 
+The Selfish Rumor Model consists mainly of four parts. 
+\begin{itemize}
+\item Networkgraph representation
+\item Blockchain representation
+\item Block Arrival Process representation
+\item Communication Process representation
+\end{itemize}
+The network graph is represented by an adjacency matrix. The blockchain representation is a set of blocks and a set of edges for each peer, which are developing over time. The block arrival process and the communication process are modelled as a Poisson process~\cite{poisson}. This is mirrored in a Simpy process with an exponentially distributed interarrival time between scheduled events.
+On each event of the block arrival process a block arrives at a random peer. This means that the event triggered by the block arrival process updates the blockchain datastructure accordingly.
+At each event of the communication process $T_i$ a peer $p_i$ tries to update a certain peer $p_j$ according to the epoch associated with the event. This results in a comparison between the datastructures associated with $p_i$ and $p_j$ and an update of $p_j$, if it is possible.
+
+Even though the basic implementation is simple, there are various parameters which influence the system behaviour greatly. The following list shall give an overview:
+\begin{itemize}
+\item Average of interarrival times - This is the rate block arrival process and communication process trigger events. 
+\item Topology of the network graph - The Network resulting from the adjacency matrix has a great influence on the bahviour of the system.
+\item Block selection - In a scenario, where multiple blocks could be transferred from one peer to another one has to be selected. How this block is selected influences system baviour.
+\item Network size - The number of peers
+\item Mining power distribution - The mining power distribution influences the peer selection. Peer selection is the process of deciding which peer gets the new block once the block arrival process triggers an event.
+\end{itemize}
+The above discussed parameters can be modified in order to capture different systems.
+
+\section{Validation of the Simpy Blockchain Simulator}
+In the following section the Simpy Blockchain Simulator is validated against synthetic experiments published by the original authors of the blockchain gossip model. Additionally real world data from Bitcoin will be additionally used to validate the legitimacy of the Simpy Blockchain Simulator. This will lay the fundamant for further analysis concerning the network and selfish mining. 
+\subsection{Validation of Simulator against \gopalan}\label{gopalananalysis}
+In the synthetic data experiments of \gopalan~  they analyze the the network for 10, 20 and 30 peers. The network topology is a complete graph. Thus, the adjacency matrix is the unit matrix. 
+The authors introduce four key metrics to analyze the system. Those are 
+\begin{itemize}
+\item Time to Consistency --- The average time an inconsistent system needs to reach a state of consistency
+\item Cycle Length --- The sum of the average time to consistency and the average of the time the system stays consistent
+\item Consistency Fraction --- The average fraction of peers that are consistent at each point in time
+\item Age of Information --- The average number of blocks an average peer is away from the consistency state
+\end{itemize}
+All metrics mentioned above refer to the term consistency. The Consistency is defined as $B_G(t)$~\ref{unisondef}, the unison of all blocks produced by the block arrival process $A$.
+In order to evaluate to capture the same system, that was analyzed by the authors the parameters are setup similar.
+These metrics can be used to verify whether the Simpy Blockchain Simulator is achieving similar numbers to the implementation of \gopalan . 
+\begin{itemize}
+\item Average of interarrival times - The interarrival time of the communication process is set to 1s. The interarrival time of the block arrival process is a variable.
+\item Topology of the network graph - The network topology is a complete graph.
+\item Block selection - In a scenario, where multiple blocks could be transferred from one peer to another the block with the lowest index number is chosen.
+\item Network size - The number of peers is set to 10, 20 and 30 accordingly.
+\item Mining power distribution - The mining power distribution is uniform.
+\end{itemize}
+
+\begin{figure}[h]
+	\begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{figures/gopalan_figures/time_to_consistency.png}
+		\caption{ Time to Consistency}
+		\label{fig:gopalan_ttc}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{figures/gopalan_figures/cycle_length_avg.png}
+		\caption{ Cycle Length}
+		\label{fig:gopalan_cl}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{figures/gopalan_figures/consistency_fraction.png}
+		\caption{ Consistency Fraction}
+		\label{fig:gopalan_cf}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{figures/gopalan_figures/age_of_information.png}
+		\caption{ Age of Information}
+		\label{fig:gopalan_aof}
+	\end{subfigure}
+	\caption{Comparison between Simpy Blockchain Simulator and values produced by \gopalan}
+\end{figure} 
+
+The metrics of time to consistency and cycle length are very closely related, because both rely on the time the system needs to reach consistency.
+Figure~\ref{fig:gopalan_ttc} and Figure~\ref{fig:gopalan_cl} show this close relationship. Additionally the comparison between the Simpy BLockchain Simulator shows a very similar tendency in both metrics. Especially in Figure~\ref{fig:gopalan_ttc} it is observable that the curve has the same shape, only flatter. Figure~\ref{fig:gopalan_ttc} shows that peernumber and block arrival rate are proportional to the average time to consistency. Since cycle c´ength is the sum of the average time to consistency and the average of the time the system stays consistent the same behavior can be observed in Figure~\ref{fig:gopalan_cl}. Additionally Figure~\ref{fig:gopalan_cl} shows that for very small numbers for the block arrival rate the cycle length increases again. When the system has a low block arrival rate the system tends to stay longer in a state of consistency, which is due to the fact that the idle time increases.
+
+Consistency fraction and age of information are both metrics measuring the consistency of an average peer. The consistency fraction is the fraction of peers, which have a blockset equal to $B_G(t)$~\ref{unisondef}. For both the simulation results by \gopalan~ and the Simpy Blockchain Simulator we can observe, that the consistency fraction decreases with an increasing blockrate and peer number. While the exact numbers do differ, similar shapes can again be observed.
+The age of information metric analyzes how much an average peer differs from $B_G(t)$~\ref{unisondef}. It showcases an increase for an increasing blockrate and peer number.
+
+The differences indicate that information spreads faster in the Simpy Blockchain Simulator. After a brief discussion with \gopalan~, they confirmed that this might be due to the fact, that in the simpy version communication processes are handled truly concurrently.	
+
+\subsection{Validation of Simulator against Bitcoin data}
+This section verifies the model against a real world blockchain system, the Bitcoin network. The Selfish Rumor Model implements a network model with a block level abstraction of blockchain systems. 
+Researchers of the Karlsruher Institut für Technologie \cite{BitcoinNetworkMonitor} monitor the Bitcoin network and obtain data of, for example, the current block propagation delay distribution. Since the Selfish Rumor Model implements a block level abstraction layer the current block propagation delay distribution becomes an important metric to analyze in order to compare the model against the real world system.
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{figures/bitcoin_current_block_propagation_delay_distribution.png}
+	\caption{Bitcoin Current Block Propagation Delay Distribution \cite{BitcoinNetworkMonitor}}
+	\label{fig:blockdelaydis}
+\end{figure}
+Figure~\ref{fig:blockdelaydis} visualizes the current block propagation delay distribution of Bitcoin. The $1\% $ of the largest delays have been filtered out and the data points have been grouped in $50ms$ steps. A significant characteristic seen in the plot is the high peek at $~400ms$ and the long tail going up to about $10000ms$ delay. Around $72\% $ of peers have a block propagation delay below $500ms$.
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{figures/propagation_multi_degree_300_peers.png}
+	\caption{Selfish Rumor Model Block Propagation Delay Distribution, 300 peers, multiple degrees, selfish miner star topology, \textcolor{red}{TODO: Bitcoin* Simulations }}
+	\label{fig:SRMblockprop}
+\end{figure}
+Figure~\ref{fig:SRMblockprop} shows the block delay distribution for the selfish rumor model. The average interarrival time of the communication processes was set to $1s$. The average maximum of peers have bock propagation delay of $7s$ and $60\% $ of the network receive the block in under $7s$. The absolute difference between the observed selfish rumor model and the delays of Bitcoin have a difference in magnitude. This is mostly linked to the average interarrival time of the communication processes. However, we can observe a similar distinct longtail distribution as in Bitcoin, which indicates that gossiping models are a good way to model blockchain systems on a block abstraction level.
+
+\paragraph{Bitcoin Parameter Setup}
+The simulator was evaluated against real world data of the Bitcoin system with a setup of 500 peers, a 16-regular-random graph as the network topology, block arrival process rate of 600s and \textcolor{red}{a communication process rate of 1s}. Because Bitcoin is the most prominent blockchain system, this parameter setup will be used for following evaluations, unless stated otherwise. This choice of parameters will also be reffered to as the Bitcoin parameter setup.	
+
+\section{Selfish Mining and Networking Effects}
+Networking effects and selfish mining can be analyzed from a global and a local point of view, cf. Table~\ref{keyfactors}. The system analysis introduced by \gopalan assesses the system mainly in terms of consistency and blockchain growth, as discussed in the previous section. Both, blockchain growth and consistency, are influenced by adversarial mining strategies such as selfish mining. The next subsection will analyze the system from a global perspective to determine the relationship between consistency, blockchain growth and selfish mining. 
+
+
+\subsection{Selfish Mining in homogenous Network Setting}
+\cauth{eyal} discovered a relationship between the relative computational power and the resulting revenue gain. They described that an increase in networking propagation factor and relative computational power results in an increased revenue gain. In a homogenous network every peer has the same degree and the same bandwidth. The Bitcoin parameter setup was used. Thus, the peer executing selfish mining has no networking advantage. 
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{figures/multi_hr_rev_and_bpr_per_peer.png}
+	\caption{Revenue and blockproduction with standard deviation for peer $0$ executing selfish mining for various relative hashrates}
+	\label{fig:multi_hr}
+\end{figure}
+Figure~\ref{fig:multi_hr} shows the revenue gain for $25\% $, $30\%$, $35\% $, $40\% $ and $45\% $ relative compuational power. Figure~\ref{fig:multi_hr} shows that for selfish mining the revenue gain is strictly below zero, while for honest mining it is above zero. This shows that in this scenario hones mining is outperforming selfish mining. Increasing the relative computational power also increases revenue gain for the selfish miner. In contrast the small revenue gain of the honest remains constant. Looking at the standard deviation the revenue gain seems to be wide spread. Nonetheless, this contradicts the results of \cauth{eyal} since they showed a strict revenue increase for $\alpha > 33\% $. Since $\alpha$ can be seen as the fraction of blocks a miner produces it is directly linked to the relative computational power this miner possesses. Thus, according to \cauth{eyal} Figure~\ref{fig:multi_hr} should be positive for the relative compuational power greater than $33\% $.
+\subsection{Selfish Mining with Networking Advantage}
+\subsection{On Achievability of Networking Advantage}
+
+\subsection{Selfish Mining and Global Network Characteristics}
+vllt das ans ende?	
+
+mainly focus on growth? growth analyse war leider bisher etwasn enttäuschend
+
+This section will analyze how global system behavior changes when peers executing selfish mining are introduced to the system. In Section~\ref{gopalananalysis} the Simpy Blockchain Simulator was verified against the results published by \gopalan. \gopalan analyzed the blockchain system from a global perspective using metrices based on growth and block propagation. Thus, those base metrices will be first used to analyze the global state with adversarial miners.
+
+\textcolor{red}{TODO: vgl. zwischen sm und nicht etc.}
+
+Selfish mining leads to intentional forks in the blockchain.
+
+  
+
+
+
+
+
+
+\subsection{Networking effects impacting selfish mining}
+Central to this thesis remains the question how impactful network effects are on the performance of selfish mining. The comparison of local and global factors from a single peer point of view can be utilized to describe a networking advantage this peer possesses.
+Selfish mining is executed in order to gain revenue. Revenue gain can be measured by comparing the actual revenue to the relative computational power of the peer.
+\subsubsection{Computational Power and Selfish Mining}
+
+
+\subsubsection{Network Advantage and Selfish Mining}
+Key aspects determining networking characteristics of a specific peer are his location relative to the network and his bandwidth, while key factors on a global scale are topology, network size and bandwidth distribution, as described in Table~\ref{keyfactors}. If for example all peers in the network possess the same amount of bandwidth, increasing the bandwidth of the selfish miner will put him at a network advantage.
+If the network topology is described as a $k$-random regular graph, then allowing the selfish miner to connect to more then $k$ peers will result in a networking advantage. This topological factor can be measured by graph metrices, such as betweeness centrality.
+
+\paragraph{Betweeness Centrality}
+If revenue gain is positively correlated to network advantage, than a goal of a selfish miner should be to increase his network advantage. As discussed before one can analyze the resulting networking advantage utilizing network metrices such as betweeness centrality.
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{figures/betweeness_centrality.png}
+	\caption{Betweeness centrality for various k-random-regular graphs for an all-connected peer $0$}
+	\label{fig:bet_cent}
+\end{figure}
+Figure~\ref{fig:bet_cent} visualizes the betweeness centrality of one peer in various k-random-regular graphs. This specific peer, peer $0$, is connected to all other nodes. The rest of the graph follows a random-regular structure. The x-axis visualizes the increasing $k$ of the k-random-regular graph. As $k$ increases the betweeness centrality of peer $0$ decreases. For smaller node amounts the decrease is faster than for bigger node amounts. This is due to the absolut increase in $k$ since a 20-regular-random graph of 100 peers is better connected than a 20-regular-random graph of 1100 peers. Better connected means in this case it is closer to a fully connected graph. The closer the graph gets to being fully connected the more the central role of peer $0$ decreases, since the number of alternative paths between any other two peers rises. Nonetheless, Figure~\ref{fig:bet_cent} shows the upper limit for peer $0$. This means that in general a peer has to connect to a large amount of peers, compared to the network average in order to obtain any networking advantage.
+
+\subsubsection{Topological Networking Advantage}
+It can be assumed that a peer with a higher degree than the network average possesses a networking advantage. Thus, raising the degree of the selfish miner puts him at a topological networking advantage. We can then estimate the actual networking advantage based on the betweeness centrality and $\gamma$ of the peer. 
+\begin{figure}[h]
+		\includegraphics[width=\textwidth]{figures/full_sm_multi_degree_200rev_and_bpr_per_peer.png}
+		
+\caption{Betweeness Centrality, Revenue Gain and Network Propagation Factor, Topological Advantage Simulations with 200 Peers}
+\label{fig:top_adv200}
+\end{figure}
+
+Figure~\ref{fig:top_adv200} shows results of experiments, which were based on analyzing the impact of topological network advantage. The experiments were carried out with 100, 200 and 300 peers respectively. Figure~\ref{fig:top_adv200} shows the results of the simulations for 200 peers, since no significant difference could be observed between 100, 200 and 300 peers simulations. The selfish miner possessed a relative computational power of $45\% $ while the rest was exponentially distributed on the remaining network. The interarrival time for communication process events was set to $1s$. The interarrival time for the block arrival process was set to $100s$. The selfish miner was connected to all peers. The rest of the network topology formed a $k$-random-regular graph, with an increasing $k$ shown in the x-axis.
+
+The green bars represent the betweeness centrality of the selfish miner. The betweeness centrality of the selfish miner decreases as $k$ increases. The blue bar represents $\gamma$. We can observe that for each categroy of peer amounts $\gamma$ is slightly highest for $k \in \{0,1,2\}$ and is rather constant for $k>2$. $\gamma$  constant at around $0.55$ even though the betweeness centrality drops for increasing $k$'s. Thus, it is likely that $\gamma$ and  betweeness centrality are not correlated.
+
+We can further observe that the revenue gain, shown in red, is highest for $k=0$. This is understandable since at $k=0$ the selfish miner can effectively eclipse every peer. The selfish miner is in total control over the information flow. For $k=1$ and $k=2$ revenue gain begins decreasing towards $0$ revenue gain. At $k=1$ and $k=2$ the selfish miner can still eclipse parts of the network but since overall connectedness increases, it becomes harder for the selfish miner to effectively eclipse every peer in the network. For $k>2$ revenue gain still seems to be slightly above $0$ which suggests that selfish mining is profitable.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

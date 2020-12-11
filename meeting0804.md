@@ -1,203 +1,118 @@
 
 
-Meeting Elias 08.04.2020
----
-Nächstes Vorgehen:
 
-Simulationen Gopalan - Wie ? Welche Sprache etc.
+14.09
 
-diskrete event simulation,
+simulationen sehen gut aus
+jetzt nochmal schritt zurück
+welche faktoren haben einfluss auf selfish Mining
+methodisch alles aufbauen
+aufschlüsseln welche faktoren haben was für einen einfluss
 
-markov prozesse, poisson prozesse
+auch gerne mehr nennen auch durchaus welche die man nicht betrachtet
 
-Stale rate: local client, müsste natürlich lange laufen ?
 
+parallel dazu sanity checks simulationen
 
-erste schritte, schreiben
-um gopalan modell zu extrahieren
 
-tex vorlage für thesis schickt er mir
-google thesis writing program
+28.09
+pdf ab related work überarbeiten
+properties -> metrics
+4 sollte motivation und fragestellung klarmachen
+tabelle überblick verschaffen von notation
+factors terminology in model übetragen
+4 - fragestellung faktoren etc. -> modell ableiten
 
+eigenschaften -> daraus modell und daraus parameter und wie beeinflussen sie diese eigenschaften
 
+nochmal schritt zurück
+was untersuchen wir eigentlich, was ist das modell
+welche einflussfaktoren betrachten wir
+welche lassen wir weg
+neue begriffe "allgemeinere" verwenden, siehe gamma
+3 wrap up nochmal überarbeiten
 
-Meeting Elias 22.04.2020
 
-Intro wie ausschweifend etc. "bitcoin trivia frage xD"
+Zusammenfassung begrifflichkeiten am ende der modell section und am ende von 4
 
-Markov models etc. in related work
-"muss das ans ende?"
 
 
-Wenn man davon ausgeht, dass ich Eyal -> neues modell, auswerten -> fertig
-in wie weit muss auf andere dinge wie ethereum slefish mining, andere selfish mining protokolle etc. eingegangen werden
 
+nächstes treffen:
+was mach ich mit einer section über geograf. location vs. abstrakte pool abstraktionslevel relay network etc.
+was mach ich mit multiple adv.
 
-programmiersprache python ? habe verschiedene sachen für discrete/continuous time simulation gefunden, markov processes, poisson processes
+eval scenario construction?
 
+5.10
+t für figures etc.
+nicht in the following figure sondern nur mit referenz also rückwärts
 
-elias zu repo einladen
+4.1 nicht von modell aus schreiben sondern allg zu modell hin
+4.1 FAKTOREN bisschen spezifischer
+vorteilhafte network location in the topology
+geografische position
+topologie position
+anbindung ( bandbreite)
 
-related work entweder als 2. oder als vorletztes, bei mir eher als 2.
-ein absatz über andere angriffe, aber sonst nicht
-alles im sinne von wie haben sie es modelliert und wie ausgewertet, wie grenze ich mich da zu ab
 
-GHOST in modell
+multi sm 3. spalte vllt oder mining oder was ist es ? naja mal schauen :P
 
+more exact language
 
 
+simulationen 2teilig vorgehen gamma aufzeichnen
+auch mal in extremwerte gehen
 
 
+12.10
+ankündigungsblöcke reduzieren, nicht unbedingt sagen was kommt nur darauf hinführen
+immer wenn man einen terminus verwendet einmal sagen um was geht
 
-MEETING ELIAS MAY 6th
--------
-Eyal and sirer protocol in related work beschreiben?, detailreicher?
 
+26.10
+weighted gamma,
+0 degree weird
+standardabweichugn
 
-Leerzeile immer nur für neuen paragraphen
-paragraphen immer einleitenden satz und abschließend ein abschließender absatz
-paragraph immer ein gedankengang
-introduction liest sich abgehackt, introduction mit motivation verbinden,
-technische tiefe eher im model chapter
-introduction noch nicht über mining genesis block reden
-introduction motivation einleiten und nur direkt zur fragestellung hinleiten abstrakt
+2.11
+verschiedene hashrates ausprobieren
 
-honest mining incentive compatible, citation & ausführlicher darstellen
+11.11
+hashrates
+gamma network experimente
+bitcoin file bzw. bitcoin network monitor
+schreiben!
 
-citation zu markov decision processes
-citeauthor -> cite noch hinten dran
-expliziter abgrenzen von related work
-related work network modelling und selfish mining modelling
-eyal erklärung in model
-mein model namen geben
-gopalan auch ins related work ankündigen
-mehr network models in die related work
-das ganze splitten in network zeug und selfish mining
-liste elias? für netzwerk zeug?
 
- model chapter mehr unterteilen
 
- immer wenn man auf was referenziert dann wird das ding groß
+gamma 100,200,300 fertig von degree 0-9, laufen gerade die 10-19 degree simulationen gerade blockiert wahrscheinlich noch die multi-hr simulationen
+bitcoin csv datei daten sehen komisch aus, std dev immernoch sehr groß, 90% conf. intervall und alle die außerhlab liegen raus -> 1 datenpunkt nur noch
+#machen :
+      - angefangen global network characteristics und selfish mining was zu schreiben -> dafür die eval machen, erstmal block propagation und growth
+      - simulationen für 100,200,300 auch mit gleicher topologie aber ohne selfish miner
+      #
 
- model extension mehr einführen und ankündigen ! das ist meins :D!
- model sextension struktur nochmal drüber nachdenken
- grafiken in tikz
- zu formalem teil : weniger zeilenumbrüche
-                    wenn zu dicht dann mehr text oder bullet points, beispiel etc.
-
- maximale distanz illustrative satz, distanz einführen.
-
- aktionen namen geben, intuitiver machen
-
- erster teil der contribution in intro nach motivation,
-
- T_SM argumentation aufschreiben, das das an sich nicht verändert wird nur durch SM
-
-
- TODO:
- -----
- 1. Introduction überarbeiten (/)
- 2. related work network models dazu, markov processes, abgrenzungen
- 3. eyal and sirer in model beschreiben
- 4. grafiken in tikz (x)
- 5. formales zeug besser strukturieren, formatieren, bullet points etc.
- 6. distance calc. smoother machen.
-
-
-
-
- meeting 20.5
-  -----
-  questions: Color coding für model abstract representation, ich möchte im prinzip etablieren das selfish immer rötlich orange ist zb
-
-
- überschriften: model by gopalan und dann introducing selfish mining
-
-
-
- june 3. notes:
- ----
- - kleine anmerkungen überarbeiten
-
- - wie verfahre ich mit consistency checks o.ä. also ist der block korrekt gegenüber meiner blockchain
- - wenn peer connected kommuniziert er immer den block mit dem niedrigsten index zuerst, vs time, etc.
-
-
- - TODO simulationen von gopalan machen -> reference selction, block droppen, index vs. time etc. ?
-
-        block droppen oder einfach durch kommunizieren -> bei gopalan passiert gar nichts
-        index vs. time of arrival -> index für gopalan
-
-
-
-
- - TOOD Selfish Mining einarbeiten
- - TODO TORUS GRAPH
-
-
-#### Gopalan Simulationen nachahmen:
- -  synthetic data
-    - parameter setup:
-        - 3 different network topologies --> complete network on 10, 20, 30 nodes
-        - communication rate of 1
-        - all simulations run for 500 cycles
-        - with 30 independent simulations for each block arrival rate (0.01, 0.02, 0.03, ..., 0.4) blocks/s
-
-    - measured parameters:
-        - Time to Consistency: minimum time from block arrival `b` until all peers have knowledge of `b`
-        - Cycle Length: mean busy + mean idle
-        - Consistency Fraction: mean of consistent peers
-        - Age of Information: avg. peer- t ... away from being consistent
-
- - "real" data
-    - parameter setup:
-        - 3500 peers
-        - the complete, reg. random 32, reg. tree 32, torus
-        - communication 9.14 blocks/s
-        - block arrival rate - measurement study
-
-
-
-
-
-
-June 17.
----
-graphen generiert, torus?
-
-synth. sims und die real data simulationen
-
-mmntn synth. nachbauen
-
-gopalan:  - lowest index vs. lowest time update, bisher zeit genommen, nocheinmal mit index anschauen, niedrigsten der die longest chain extended, das mal nachlesen bitcoin code oder bitcoin stackexchange
-          - parent drop
-          - shuffle in complete graph an oder nicht
-
-
-
-
-
-
-
-
-TODO:
-  - die leute mal anschreiben
-  - block nie bekommen sollte nicht eintreten
-
-
-july 1.
----
-confidence interval & standard abweichung (done)
-
+16.11
+nur die 90% der ersten peers die den block senden nehmen longtail rausfiltern
 
 TODO
 ---
-- per hand graphen aus paper extrahieren (x)
-- gopalan simulation mit gopalan graph modell produzieren (4) + shadow o.ä. mit graph daten aus paper hinterlegt (x)
-- growth rate, größe des netzwerks, graph art, verteilung 
-- modell verändern, blockchain block referenzen, block uopdate selektion überdenken/nachschauen
-- verteilung in block arrival prozess einarbeiten (vs. uniform)
-- dazu text schreiben
-- nochmal metriken von gopalan anschauen
-- selfish mining einarbeiten
-- metriken für das dann ?
+Bitcoin verification experimente um an bitcoin ranzukommen  500 peers oder vllt 1000  16 regular
+
+baseline für global eval, 1. netzwerk einfluss groß wenn man da was sieht dann auch kleiner
+
+
+pure local selfish mining analysis
+gamma: multiple degree sachen -> rechte seite
+
+alpha: multi hr -interprete script schreiben
+
+
+global: difference between selfish mining and no selfish mining -> interprete script schreiben, baseline experimente
+
+multi degree: mehr verschiedene peers, mehr k nur betweeness centrality
+
+betweeness centrality davor diskutieren.  
+correlations test betweeness centrality
+eyal und sirer gamma alpha textlich beschreiben

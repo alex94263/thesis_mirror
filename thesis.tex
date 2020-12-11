@@ -8,19 +8,28 @@
 \usepackage{csquotes}
 \usepackage{bera}
 \usepackage[T1]{fontenc}
-
+\usepackage{makecell}
+\usepackage{multirow}
 \usepackage[square,numbers]{natbib}
 \usepackage{subcaption}
 \bibliographystyle{abbrvnat}
 
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,positioning}
-\tikzset{sm node/.style={ellipse,fill=black!20,draw,very thick,minimum width=8cm,minimum height=5cm,inner sep=0pt},}
+\tikzset{sm node/.style={ellipse,fill=black!10,draw,very thick,minimum width=8cm,minimum height=5cm,inner sep=0pt},}
+\tikzset{sm circular/.style={ellipse,fill=black!10,draw,very thick,minimum width=7cm,minimum height=3cm,inner sep=0pt},}
+
 \tikzset{sm circ/.style={circle,fill=black!20,draw,thick,minimum width=1cm,inner sep=0pt},}
 \tikzset{block/.style={rectangle,fill=red,draw,very thick,minimum width=2.5cm, minimum height=0.8cm,inner sep=0pt},align=left}
+\tikzset{bblock/.style={rectangle,fill=green!20,draw,very thick,minimum width=2.5cm, minimum height=0.8cm,inner sep=0pt},align=left}
+\tikzset{pblock/.style={rectangle,fill=yellow,draw,very thick,minimum width=2.5cm, minimum height=0.8cm,inner sep=0pt},align=left}
+
+
 \tikzstyle{arrow} = [very thick,->,>=stealth]
 
 \newcommand{\gopalan}{~\citeauthor{gopalan}~\cite{gopalan}}
+\newcommand{\cauth}[1]{~\citeauthor{#1}~\cite{#1}}
+\newcommand{\reffig}[1]{Figure~\ref{#1}}
 
 \begin{document}
 
