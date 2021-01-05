@@ -116,3 +116,10 @@ multi degree: mehr verschiedene peers, mehr k nur betweeness centrality
 betweeness centrality davor diskutieren.  
 correlations test betweeness centrality
 eyal und sirer gamma alpha textlich beschreiben
+
+
+
+
+
+14.12
+global growth selfish miner no selfish miner
