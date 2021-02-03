@@ -1,20 +1,21 @@
 \chapter{A Network-centric Model for Selfish Mining}\label{chap:contribution}
 The goal of this thesis is to analyze the relationship between selfish mining and networking effects. The model proposed by \gopalan~ appears to be suitable to analyze this relationship. It offers networking effects because it is based on rumor spreading, as well as analytical properties, such as that it can be utilized to simulate the system execution time.
-The first step to analyze the relationship between selfish mining and networking effects is to identify important system factors. Based on the model introduced by \gopalan, a new model will be constructed which also includes adversarial behavior, such as selfish mining. This will be called the Selfish Rumor Model. Through the combination of a rumor-spreading model and an abstract blockchain mining protocol, the impact of networking effects on selfish mining can be studied.
+The first step to analyze the relationship between selfish mining and networking effects is to identify important system factors. Based on the model introduced by \gopalan, we develop a new model, the Selfish Rumor Model, which also includes adversarial behavior. Through the combination of a rumor-spreading model and an abstract blockchain mining protocol, the impact of networking effects on selfish mining can be studied.
 
 \section{System Factors}
 Under  the  assumption  that  adversarial  mining  strategies  and  network  properties  influence each other it is important to categorize those factors and characterize their interdependencies. Factors can be split up into local and global factors, as well as network and mining properties.
 \begin{figure}[t]
 \centering
+\small
 {\renewcommand{\arraystretch}{3}
 	\begin{tabular}{|c|c|c|c|}
 	\hline
-				&\textbf{Network Factors}		&\textbf{Mining Factors}		&\textbf{Adversarial Factors}\\
+	&\textbf{Local Factors}		&\textbf{Global Factors}		&\textbf{Adversarial Factors}\\
 	\hline
-	\textbf{Global Factors}		&\small \makecell{Network Graph Topology \\ Network Size \\ Bandwidth Distribution \\} 		&\small \makecell{ Mining Power Distribution \\ Difficulty} 
-	&\small \multirow{2}{*}{\makecell{Multiple Selfish \\Miners}}\\
+	\textbf{Network Factors}		&\footnotesize \makecell{Network Graph Topology \\ Network Size \\ Bandwidth Distribution \\} 		&\footnotesize \makecell{Geographic Location \\ Topological Location \\ Bandwidth \\} 
+	&\footnotesize \multirow{2}{*}{\makecell{Number of Selfish Miners \\ Mining Power of Selfish Miners}}\\
 	\cline{1-3}
-	\textbf{Local Factors}			&\small \makecell{Geografic Location \\ Topological Location \\ Bandwidth \\}		&\small \makecell{Mining Power \\ Mining Strategy} &\\
+	\textbf{Mining Factors}			&\footnotesize \makecell{ Mining Power Distribution \\ Difficulty}		&\footnotesize \makecell{Mining Power \\ Mining Strategy} &\\
 	\hline
 	\end{tabular}
 }
@@ -24,20 +25,20 @@ Under  the  assumption  that  adversarial  mining  strategies  and  network  pro
 \subsection{Network Factors}
 A blockchain system is a distributed system and utilizes a network to propagate information. As such the network behavior is important for the blockchain system. Network factors influence how information is spread. Those factors are visualized in Table~\ref{keyfactors}. An important characteristic is how fast information is spread. On a global level this is highly influenced by how big the network is. In addition to network size, the network graph topology also plays a major role in how information is propagated through the network. In general a more densely connected network can propagate information faster to each peer. Another crucial factor is bandwidth distribution. The Bandwidth of a peer determines at what rate he can communicate. On a given network size the combination of bandwidth distribution and network graph topology influences drastically how fast information can spread. As an example let us consider an exponential degree distribution and an exponential bandwidth distribution. On the one hand information will spread reasonably fast, when a high bandwidth node also has a high degree. On the other hand if a node with a very low bandwidth has a high degree, he will become a bottleneck.
 
-From a local point of view the location of a peer becomes important. Both geografic and topological location determine how fast a peer receives and sends information. Together with the amount of bandwidth the location also determines how much information is routed through that specific peer. Generally speaking a more central peer receives and sends information faster and also becomes a intermediate routing point more often. One can measure the centrality of a node by analyzing his betweeness centrality. The betweeness centrality is a measure on how many shortest paths a node lies between any other pair of two nodes. 
+From a local point of view the location of a peer becomes important. Both geographic and topological location determine how fast a peer receives and sends information. Together with the amount of bandwidth the location also determines how much information is routed through that specific peer. Generally speaking a more central peer receives and sends information faster and also becomes a intermediate routing point more often. One can measure the centrality of a node by analyzing his betweenness centrality. The betweenness centrality is a measure on how many shortest paths a node lies between any other pair of two nodes. 
 \subsection{Mining Factors}
 Additionally, in a blockchain system key factors include mining factors. Those factors influence the mining process of each individual miner. On a global scale mining power distribution and difficulty are characteristic. Difficulty determines at which rate a new block is introduced to the network. Mining power distribution determines, where the new block is how likely to arrive. They are both key factors influencing the average block propagation, since an ill combination of both can lead to network congestion. As an example consider a peer with a high relative mining power, who only has one outgoing connection to the network. This one connection is clearly a bottleneck prone to lead to congestion. With a low difficulty the peer will mine many blocks in a short amount of time and will flood the peer connecting him to the network. This will result in an overall higher average block propagation time.
 
 From a local point of view a miners mining process is mainly influenced by his mining power and the executed mining strategy. If a miner recruits additional computing power, he will gain increased mining power and produce more blocks. If a miner executes an adversarial mining strategy such as selfish mining in contrast to honest mining, he will have a different reference selection and a different block publishing behavior.
 
 \subsection{Adversarial Factors}
-Adversarial factors also influence a blockchain system. Because of the mining protocol a blockchain system faces additional threads outside of adversaries attacking the underlying network structure. Peers can execute block withholding strategies such as selfish mining. By executing selfish mining strategies the forkrate of the blockchain is increased and the overall growth decreased. Multiple selfish miners escalate this problem.
+Adversarial factors also influence a blockchain system. Because of the mining protocol a blockchain system faces additional threads outside of adversaries attacking the underlying network structure. Peers can execute block withholding strategies such as selfish mining. By executing selfish mining strategies the forkrate of the blockchain is increased and the overall growth decreased. Multiple selfish miners escalate this problem. Multiple selfish miners work against each other, but the power threshold above which a selfish miner gains revenue decreases proportionally to the number of selfish miners\ref{multi_sm}.
 
 
 We can denote that the network, mining and adversarial factors mentioned above play a crucial part for the behavior of the overall system. It is therefore important to select those factors carefully and construct scenarios which analyze a wide variety of possible system factor combinations. In the next section we will now introduce the Selfish Rumor Model.
 
 \section{Selfish Rumor Model}\label{selfishmodel}
-The selfish miner behaves different to an honest miner and therefore can be modelled by altering the reference selection and communication process. The reference selection process is policy driven, and can thus be modified by providing a new selfish policy. However, for the analysis of \gopalan~ the edge set is only represented in an abstract form, since at most the height of a block is important. As a result, specifics concerning the edge set are never discussed. For selfish mining to be implemented into the model, the reference selection process becomes very important and has to be further specified.
+The selfish miner behaves different to an honest miner and therefore can be modeled by altering the reference selection and communication process. The reference selection process is policy driven, and can thus be modified by providing a new selfish policy. However, for the analysis of \gopalan~ the edge set is only represented in an abstract form, since at most the height of a block is important. As a result, specifics concerning the edge set are never discussed. For selfish mining to be implemented into the model, the reference selection process becomes very important and has to be further specified.
 \paragraph{Reference Selection Process Specification}
 \gopalan~ introduce an edge set $E_{G_{p_i}}(t)$ for each peer for each point in time. Those edges represent selected references.
 Additionally, we will introduce the notion of a Topblock $b_{{top}_{pi}}$.
@@ -51,6 +52,7 @@ Through the above described rules reference selection is deterministically defin
 
 \paragraph{Selfish Rumor Model}
 The Selfish Rumor Model is based on the Blockchain Gossip Model introduced by \gopalan . The construction of the Selfish Rumor Model can be seen as a modification of the Blockchain Gossip Model and is best explained in that manner. However, introducing adversarial mining strategies and altering key factors such as mining power distribution, changes the new model in such a drastic way that it has to be considered a new model.
+
 The first aspect to be modified is the communication process. 
 Key idea of selfish mining is block withholding. The selfish miner possesses three blockchain representations. 
 \begin{itemize}
@@ -103,7 +105,7 @@ A total number of five processes is used to let all entities interact with each 
 \item $T_{SM}$: Ensures other peers are updated with blocks from $G_{SM_{comm}}(t)$.
 \end{itemize}
 
-Peer $SM \in P$ has an associated policy slightly different to the policy described in the gopalan model~\ref{policy}. Note that to follow the Tree Policy~\citep{gopalan}, a deterministic rule has to be established for the case that $|O_{SM} \cap L_{SM}(t)| > 1$.
+Peer $SM \in P$ has an associated policy slightly different to the policy described in the Gopalan model~\ref{policy}. Note that to follow the Tree Policy~\citep{gopalan}, a deterministic rule has to be established for the case that $|O_{SM} \cap L_{SM}(t)| > 1$.
 Assume that $SM$ has the knowledge of the set of blocks mined through him, $M_{SM}(t) \subset B_{G_{SM}}(t)$. $SM$ will set 
 \begin{equation}
 (L_{SM}(t) \cap M_{SM}(t)) \neq \emptyset \rightarrow L'_{SM}(t) \subset ( L_{SM}(t) \cap M_{SM}(t)) 
@@ -140,7 +142,10 @@ This situation $0'$ is also shown and visualized in Subsection~\ref{eyalmodel} a
 \item $Publish$: Assume $0'(t^-)=\top$ and $t \in t_{inc}$, $U_{priv-com}$ updates $G_{SM_{comm}}(t)$, such that it includes the subgraph induced by the nodes on the paths between $L'_{SM}(t)$ and ${0}$. The selfish miner will publish his newly mined block, because he was previously in $0'$.
 \item $Adopt$: Assume $0'(t^-)=\top$ and $s(t)=-1$, then $U_{priv-com}$ updates $G_{SM_{comm}}(t)$, such that $G_{SM_{comm}}(t) = G_{SM_{private}}(t)$. The selfish miner will adopt the public chain, because he was previously in $0'$.
 \end{enumerate}
-The above section introduced a new model, the Selfish Rumor Model. Through the combination of rumor-spreading mechanisms for an abstract network layer representation and adversarial mining strategies, this model can be used to analyze the relationship between the selfish mining attack and networking effects.
+The above section introduced a new model, the Selfish Rumor Model.
+However, a number of core contributions of \gopalan still hold true, such as the results proofing that Poisson processes are a good approximation of the real process. Furthermore, since peer-to-peer networks based on regular grids, regular trees and random geometric networks are already proven to be non scaleable the Selfish Rumor Model can rely on regular-random networks. The Selfish Rumor Model utilizes the tree-policy. \gopalan stated that any blockchain constructed under the tree policy is one-ended as long as the network is stable. A blockchain is one-ended if there are infinitely many confirmed blocks and a stable network means an infinite sequence of times, where the system is consistent. Since selfish mining does not influence the system to produce an infinite amount of inconsistent system times, the network has to considered stable. As a result the proof on the one-endedness of the blockchain DAG also holds true.
+
+Through the combination of rumor-spreading mechanisms for an abstract network layer representation and adversarial mining strategies, this model can be used to analyze the relationship between the selfish mining attack and networking effects.
 
 
 

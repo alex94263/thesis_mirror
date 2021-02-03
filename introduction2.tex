@@ -1,0 +1,21 @@
+\chapter{Introduction}\label{chap:introduction}
+Bitcoin is the most prominent example of a decentralized cryptocurrency~\cite{1}. Before the development of Bitcoin a decentralized cryptocurrency had been envisioned for many years. It is a system, where a ledger is kept consistent among multiple parties in a peer-to-peer network without the need of trust. It enables the deployment of electronic cash without a central authority figure like a bank.
+For this reason it is an enhancement to the currently established electronic banking system.
+
+It is important to keep the ledger consistent and correct. Since there is no central authority, the ledger becomes a consensus problem, which has to be solved in a cooperative, distributed manner. It can also be seen as a Byzantine Agreement problem~\cite{garay2015bitcoin}, because multiple indepedent parties have to agree on the state of the ledger. Solving this problem is the main contribution of the development of Bitcoin.
+
+Bitcoin assumes an honest majority in a public system~\cite{tschorsch}. Therefore, the consistence and correctness of the ledger becomes a voting problem. If every participant in the system is able to cast one vote, then the ledger is correct and consistent if there exists an honest majority. However, voting in a public distributed system remains a hard problem, especially considering sybil attacks~\cite{sybil}. Sybil attacks enable an attacker to forge identities and obtain a dishonest majority. To solve this Bitcoin has to protect against sybil attacks, without a central authority figure. Bitcoin achieves this by binding voting right to computational power. Since computational power is a ressource harder to increase than the number of forged identities, obtaining a dishonest majority becomes much harder.
+
+Bitcoin binds votes to computational ressources through cryptographic puzzles. In order for a peer to participate in the system, he has to solve a cryptographic puzzle. This process, also known as mining, consumes the computational ressources of the peer. Simply forcing participants to waste all their computing power, only to participate in the system would lead to no participants. Therefore, this mining process has to be incentivised. If a miner mines a block, he receives a mining reward. This helps spreading the overall computational power of the network among multiple different parties, since every party is competing for mining rewards. Without a mining reward there be no economical reason to spend computational ressources on bitcoin.
+
+Mining is a process, which builds inherently on the idea of incentives. It is logical, that miners will strive for the best strategy to maximize rewards. A mining protocol maximizing rewards is called incentive compatible. It can also be assumed that a miner will always execute the mining protocol, which maximizes rewards. The original bitcoin mining protocol is assumed to be incentive compatible~\cite{1}. However, \citeauthor{eyal} show the existence of deviant mining protocols with greater rewards~\cite{eyal}. Miners executing such protocols are called selfish miners. This imposes a threat, since it reduces the performance of the overall system. Additionally, selfish miners obtain a greater voting power than their computational ressources allow and as a result tilt the honest majority balance.
+
+The central goal of this master thesis is to analyze the impact of selfish mining as an attack on blockchain systems. 
+While it has been established that selfish mining imposes a threat on blockchain, it remains unassessed how big the impact is. 
+Additionally, selfish mining is highly influenced by networking effects. 
+Therefore, in order to assess the impact of selfish mining, analysis has to be performed in a model, which also captures the underlying network.
+
+
+
+
+

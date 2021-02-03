@@ -36,35 +36,28 @@ The authors introduce four key metrics to analyze the system. Those are
 \end{itemize}
 All metrics mentioned above refer to the term consistency. The Consistency is defined as $B_G(t)$~\ref{unisondef}, the unison of all blocks produced by the block arrival process $A$.
 In order to evaluate to capture the same system, that was analyzed by the authors, the parameters are setup similar.
-These metrics can be used to verify whether the Simpy Blockchain Simulator is achieving similar numbers to the implementation of \gopalan . 
-\begin{itemize}
-\item Average of interarrival times - The interarrival time of the communication process is set to 1s. The interarrival time of the block arrival process is a variable.
-\item Topology of the network graph - The network topology is a complete graph.
-\item Block selection - In a scenario, where multiple blocks could be transferred from one peer to another the block with the lowest index number is chosen.
-\item Network size - The number of peers is set to 10, 20 and 30 accordingly.
-\item Mining power distribution - The mining power distribution is uniform.
-\end{itemize}
+These metrics can be used to verify whether the Simpy Blockchain Simulator is achieving similar numbers to the implementation of \gopalan . As for the parameter setup the interarrival time of the communication process is set to $1s$. The interarrival time of the block arrival process is a variable. The network topology is a complete graph. In a scenario, where multiple blocks could be transferred from one peer to another the block with the lowest index number is chosen. The network size is set to 10, 20 and 30 peers accordingly. The mining power distribution is uniform.
 
 \begin{figure}[h]
-	\begin{subfigure}[b]{0.48\textwidth}
+	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{figures/gopalan_figures/time_to_consistency.png}
 		\caption{ Time to Consistency}
 		\label{fig:gopalan_ttc}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.48\textwidth}
+	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{figures/gopalan_figures/cycle_length_avg.png}
 		\caption{ Cycle Length}
 		\label{fig:gopalan_cl}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.48\textwidth}
+	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{figures/gopalan_figures/consistency_fraction.png}
 		\caption{ Consistency Fraction}
 		\label{fig:gopalan_cf}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[b]{0.48\textwidth}
+	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{figures/gopalan_figures/age_of_information.png}
 		\caption{ Age of Information}
 		\label{fig:gopalan_aof}
@@ -73,7 +66,7 @@ These metrics can be used to verify whether the Simpy Blockchain Simulator is ac
 \end{figure} 
 
 The metrics of time to consistency and cycle length are very closely related, because both rely on the time the system needs to reach consistency.
-Figure~\ref{fig:gopalan_ttc} and Figure~\ref{fig:gopalan_cl} show this close relationship. Additionally the comparison between the Simpy BLockchain Simulator shows a very similar tendency in both metrics. Especially in Figure~\ref{fig:gopalan_ttc} it is observable that the curve has the same shape, only flatter. Figure~\ref{fig:gopalan_ttc} shows that peernumber and block arrival rate are proportional to the average time to consistency. Since cycle c´ength is the sum of the average time to consistency and the average of the time the system stays consistent the same behavior can be observed in Figure~\ref{fig:gopalan_cl}. Additionally Figure~\ref{fig:gopalan_cl} shows that for very small numbers for the block arrival rate the cycle length increases again. When the system has a low block arrival rate the system tends to stay longer in a state of consistency, which is due to the fact that the idle time increases.
+Figure~\ref{fig:gopalan_ttc} and Figure~\ref{fig:gopalan_cl} show this close relationship. Additionally the comparison between the Simpy Blockchain Simulator shows a very similar tendency in both metrics. Especially in Figure~\ref{fig:gopalan_ttc} it is observable that the curve has the same shape, only flatter. Figure~\ref{fig:gopalan_ttc} shows that peernumber and block arrival rate are proportional to the average time to consistency. Since cycle length is the sum of the average time to consistency and the average of the time the system stays consistent the same behavior can be observed in Figure~\ref{fig:gopalan_cl}. Additionally Figure~\ref{fig:gopalan_cl} shows that for very small numbers for the block arrival rate the cycle length increases again. When the system has a low block arrival rate the system tends to stay longer in a state of consistency, which is due to the fact that the idle time increases.
 
 Consistency fraction and age of information are both metrics measuring the consistency of an average peer. The consistency fraction is the fraction of peers, which have a blockset equal to $B_G(t)$~\ref{unisondef}. For both the simulation results by \gopalan~ and the Simpy Blockchain Simulator we can observe, that the consistency fraction decreases with an increasing blockrate and peer number. While the exact numbers do differ, similar shapes can again be observed.
 The age of information metric analyzes how much an average peer differs from $B_G(t)$~\ref{unisondef}. It showcases an increase for an increasing blockrate and peer number.
@@ -82,82 +75,80 @@ The differences indicate that information spreads faster in the Simpy Blockchain
 
 \subsection{Validation of Simulator against Bitcoin data}
 This section validates the model against a real world blockchain system, the Bitcoin network. The Selfish Rumor Model implements an abstract network model of blockchain systems, simulating block creation and block propagation.
-Researchers of the Karlsruher Institut für Technologie \cite{BitcoinNetworkMonitor} monitor the Bitcoin network and obtain data of, for example, the current block propagation delay distribution. Since the Model can be used to analyze blocks and their propagation, the current block propagation delay distribution is a suitable metric to compare the Selfish Rumor Model against the real world system.
-
-\begin{figure}[ht]
-	\includegraphics[width=\textwidth]{figures/bitcoin_current_block_propagation_delay_distribution.png}
-	\caption{Bitcoin Current Block Propagation Delay Distribution \cite{BitcoinNetworkMonitor}}
-	\label{fig:blockdelaydis}
-\end{figure}
-Figure~\ref{fig:blockdelaydis} visualizes the current block propagation delay distribution of Bitcoin. The $1\% $ of the largest delays have been filtered out and the data points have been grouped in $150ms$ steps. A significant characteristic seen in the plot is the high peek at $~400ms$ and the long tail going up to about $10000ms$ delay. Around $72\% $ of peers have a block propagation delay below $500ms$. Especially the long tail distribution is a very important characteristic for the current block propagation delay distribution.
-
-With the characteristics obtained through the Bitcoin Network Monitor it is possible to search for a parameter setup for the Selfish Rumor Model, which mimics the block propagation characteristics of Bitcoin.
-To achieve a similar block propagation one can analyze mainly the topology of the network graph and the communication process rate.
-
-\begin{figure}[ht]
-	\begin{subfigure}[b]{0.48\textwidth}
-		\includegraphics[width=\textwidth]{figures/propagation_histogram_degree_search_smaller.png}
-		\caption{Block Propagation Delay Distribution }
-		\label{fig:SRMblockprop}
+Researchers of the Karlsruher Institut für Technologie \cite{BitcoinNetworkMonitor} monitor the Bitcoin network and obtain data of, for example, the current block propagation delay distribution. Since the model can be used to analyze blocks and their propagation, the current block propagation delay distribution is a suitable metric to compare the Selfish Rumor Model against the real world system.\\
+Bitcoin block propagation has two distinct characteristics. The distribution has a high peak at around $~400ms$ and a significant long tail, with block delays going up to $30s$. Since the whole dataset contains many outliers, $5\% $ of the largest delays are filtered out. This data is then used to match parameter setups of the Selfish Rumor Model against Bitcoin and find setups offering a similar block propagation.\\
+To achieve a similar block propagation one can mainly analyze the topology of the network graph and the communication process rate.
+The current Bitcoin network has an unknown topology. The original protocol described an algorithm, where a peer tries to maintain at least 8 connections. This would result in a random regular graph as network topology. However, analysis of the Bitcoin network comes to a different conclusion.
+For example \cauth{baumann2014exploring} found strong indicators for a scale-free degree distribution.
+Additionally, the FIBRE network and Compact Blocks were introduced to enable faster block propagation~\cite{measurement}. This results in a network topology, which cannot be captured by single graph representation.\\
+Since the Selfish Rumor Model uses one single graph representation the objective is to utilize a topology and minimize the Root-Mean-Square-Error compared to Bitcoins block propagation. Therefore, either a regular random graph or a scale free graph should be chosen as a network topology for the Selfish Rumor Model. 
+\begin{figure}[h! t]
+	 \begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{figures/RMSE_95.png}
+		\caption{Root-Mean-Square-Error between Selfish Rumor Model regular-random Graph and Bitcoin}
+		\label{fig:RMSE}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.48\textwidth}
-		\includegraphics[width=\textwidth]{figures/avg_propagation_degree_search.png}
-		\caption{Average Block Propagation Delay with standard deviation }
-		\label{fig:SRMblockpropavg}
-	\end{subfigure}
-\caption{Selfish Rumor Model Experiments for various degrees in a regular-random graph, 500 peers, Communication process rate 1ms, Block Arrival Process rate 600s}
-\end{figure}
-Figure~\ref{fig:SRMblockprop} shows the block delay distribution for the selfish rumor model. The $1\% $ of the largest delays have been filtered out and the data points have been grouped in $50ms$ steps. Each parameter setup was simulated for 500 blocks and repeated fifty times with different seed values.
-The shape of the distribution curve differs in shape and magnitude. The curve of the Selfish Rumor Model is wider and has a peak at around 6000ms.
-Figure~\ref{fig:SRMblockpropavg} shows, that the average block propagation is around $10000ms$ independent of the selected degree. It also shows a high standard deviation and therefore a high variance.
-
-The second modifiable parameter is the communication process rate.
-\begin{figure}[ht]
-	\begin{subfigure}[b]{0.48\textwidth}
-		\includegraphics[width=\textwidth]{figures/avg_propagation_comm_rate_search.png}
-		\caption{Regular Random Graph Degree 8}
-		\label{fig:CommSearch8}
+		\includegraphics[width=\textwidth]{figures/RMSE_95_barabasi.png}
+		\caption{Root-Mean-Square-Error between Selfish Rumor Model scale-free Graph and Bitcoin}
+		\label{fig:RMSEBar}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.48\textwidth}
-		\includegraphics[width=\textwidth]{figures/avg_propagation_comm_rate_search.png}
-		\caption{Regular Random Graph Degree 8 TODO 16}
-		\label{fig:CommSearch16}
+		\includegraphics[width=\textwidth]{figures/rmse_min.png}
+		\caption{Minimum RMSE value in random-regular graph and scale-free graph}
+		\label{fig:minRMSE}
 	\end{subfigure}
-\caption{Selfish Rumor Model Experiments for various communication process rates in a regular-random graph, 500 peers, Block Arrival Process rate 600s}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{figures/propagation_histogram_withBitcoin.png}
+		\caption{Selfish Rumor Model Model Block Propagation Distribution and Bitcoin}
+		\label{fig:SRMBitcoin2}
+	\end{subfigure}
+\caption{Selfish Rumor Model Experiments in comparison with Bitcoin, 500 Peers}
+\label{fig:SMRBitcoin}
 \end{figure}
-Figure~\ref{fig:CommSearch16} as well as Figure~\ref{fig:CommSearch8} both show a proportional relationship between the rate of the communication processes and block propagation time. 
-TODO: Simulationen noch nicht durch 1-2 sätze zur genauen auswertung
 
-The above simulations do not indicate a parameter setup to achieve a similar block propagation in the Selfish Rumor Model as in Bitcoin. This can be due to that fact that over the last years Bitcoin has seen numerous improvements towards achieving a faster block propagation time. Two of these improvements are Compact Blocks and the FIBRE Network respectively. However, it is not only the lower average block propagation time, but also the different shape of the curve. This indicates that an even more similar block propagation is not possible.
-Additionally, reviewing older Bitcoin statistics \cauth{BlockPropOld} found an average block propagation of $12.6s$.
-
-We conclude this section by establishing a parameter setup, denoted as Bitcoin Parameter setup. This parameter setup will be used to mimic a blockchain system as close as possible to Bitcoin.
-\begin{itemize}
-\item Average of interarrival times - The interarrival time of the communication process is set to 1ms. The interarrival time of the block arrival process is set to 600s.
-\item Topology of the network graph - The network topology follows a 16-regular-random graph. Since the Bitcoin core client tries to establish 8 connections it seems reasonable to establish a 16-regular-random graph in the model.
-\item Block selection - In a scenario, where multiple blocks could be transferred from one peer to another the block with the earliest arrival time is chosen.
-\item Network size - The number of peers is set to 500.
-\item Mining power distribution - The mining power distribution is exponential.
-\end{itemize}
-This parameter setup will be used for following evaluations, unless stated otherwise. In addition all simulations will be carried out for an average of 500 blocks and repeated 50 times for different seed values to ensure statistical significance.
+Figure~\ref{fig:SMRBitcoin} shows the most important results of various experiments carried out to minimize the RMSE between the simulations and Bitcoin. It also offers a comparison between the scale-free topology shown as orange and the regular random topology shown as blue. Since both topologies differ only in the degree distribution, we can compare both by their average degree respectively. All block delays were grouped in $1ms$ steps. All setups were repeated 100 times to ensure statistical significance.\\
+Figure~\ref{fig:RMSE} shows the Root-Mean-Square-Error(RMSE) for 16, 32, 68, 100, 140 degrees and various communication process rates in comparison to Bitcoin. The lowest RMSE, $0.00016$, was achieved by 100-regular-random graph with a communication process rate of $35ms$. This parameter setup is referred to as $RegRan$. 
+In Addition the results for a 16- and 32-regular-random graph are also shown in Figure~\ref{fig:RMSE}. A 32 degree regular random graph is used by \gopalan ~to evaluate against Bitcoin data. However, the RMSE-values are significantly higher than those of the 100-regular-random graph. This is most likely due to the usage of the FIBRE relay network and Compact Blocks in Bitcoin, which decreases block propagation delay. Additionally, all curves have a clear tendency towards a specific communication rate minimizing the RMSE.\\
+This is also the case for scale-free networks, as is visualized in Figure~\ref{fig:RMSEBar}. For each topology there is one minimum communication rate, minimizing the RMSE against Bitcoin block propagation delay distribution. The scale-free network is generated over the Barabasi-Albert algorithm. This algorithm has three determining parameters. The number of vertices, $m$ for the number of edges generated for each vertex and a power factor. Since the lowest RMSE was always achieved for the power factor $2$ Figure~\ref{fig:RMSEBar} shows only the RMSE for power $2$.
+The lowest achieved RMSE, $0.00018$, for scale free networks was for an average of 16 m, a power factor of 2 and a communication process rate of 40ms. This parameter setup is referred to as $ScaFre$.\\
+Both topologies achieve quite low RMSE values. However, Figure~\ref{fig:minRMSE} visualizes the difference between the minimum RMSE values achieved for each average degree for both random regular and scale free graphs.
+Regular random graphs lower the RMSE values for an increasing average degree, until an average degree of 80. Above an average degree of 80 the RMSE values remain quite constant.\\
+The analyzation of parameter setups for scale free networks is more complex. Scale-free networks, in terms of the Barabasi-Albert model, have the parameter m, which can be used to control the average degree of the network. Additionally scale-free networks have a power factor, which controls the preferential attachment process. Since 4 different power factors were analyzed for each setup, Figure~\ref{fig:minRMSE} visualizes 4 datapoints above each other for each average degree. We can observe that for $m=16$ and for $m=32$ the achieved RMSE values are the lowest for power factor 2 and a communication process rate of 40ms.\\
+Figure~\ref{fig:SRMBitcoin2} visualizes the block propagation distribution from the Selfish Rumor Model for both tested topologies in their minimum configuration and Bitcoin. The regular random graph models the peak closer. The scale free network cannot model the peak as good as the regular random network, but the curve shows more distinctly the longtail behavior. The better model for lower delays achieves a better RMSE value, since lower delays contain much more data points. Since data points above 1500ms are rare for Bitcoin, the exact modelling of the long tail does not impact the RMSE value as much. Nonetheless, both parameter setups are valuable to establish a validated Selfish Rumor Model Setup.\\
+We conclude this section by establishing two parameter setups. The minimum configuration for regular random networks is called $RegRan$ and the minimum configuration for scale-free networks is called $ScaFre$. Both are discussed in their differences in the above chapter exhaustively. However, there are also
+characteristics both share.
+The interarrival time of the block arrival process is set to 600s. In a scenario, where multiple blocks could be transferred from one peer to another the block with the earliest arrival time is chosen. The number of peers is set to 500 and the mining power distribution is exponential. Additionally Simulations are always carried out 100 times to ensure statistical significance.\\
+Those parameter setups, $RegRan$ and $ScaFre$ are used for following evaluations.
 
 \section{Selfish Mining and Networking Effects}
-Networking effects and selfish mining can be analyzed from a global and a local point of view, cf. Table~\ref{keyfactors}. The system analysis introduced by \gopalan assesses the system mainly in terms of consistency and blockchain growth, as discussed in the previous section. Both, blockchain growth and consistency, are influenced by adversarial mining strategies such as selfish mining. The next subsection will analyze the system from a global perspective to determine the relationship between consistency, blockchain growth and selfish mining. 
-
+Networking effects and selfish mining can be analyzed from a global and a local point of view, cf. Table~\ref{keyfactors}. The system analysis introduced by \gopalan assesses the system mainly in terms of consistency and blockchain growth, as discussed in the previous section. Both, blockchain growth and consistency, are influenced by adversarial mining strategies such as selfish mining. Additionally, selfish mining is influenced by networking factors.
 
 \subsection{Selfish Mining in homogenous Network Setting}
-\cauth{eyal} discovered a relationship between the relative computational power and the resulting revenue gain. They described that an increase in networking propagation factor and relative computational power results in an increased revenue gain. In a homogenous network every peer has the same degree and the same bandwidth. Thus, the selfish miner has no network advantage. The Bitcoin parameter setup was used and the simulations were repeated 100 times with different seed values for each parameter setup.
-\begin{figure}[ht]
-	\includegraphics[width=\textwidth]{figures/multi_hr_sm_gain.png}
-	\caption{Revenue and blockproduction with standard deviation for peer $0$ executing selfish mining for various relative hashrates}
-	\label{fig:multi_hr}
+\cauth{eyal} discovered a relationship between the relative computational power and the resulting revenue gain. They described that an increase in networking propagation factor and relative computational power results in an increased revenue gain. In a homogenous network every peer has the same degree and the same bandwidth. Such a network setup is the $RegRan$ setup and it can be used to analyze selfish mining in a scenario without any networking advantage.
+\begin{figure}[h! t]
+	 \begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{figures/rev_and_bpr_per_peer.png}
+		\caption{Revenue and blockproduction\\ with standard deviation}
+		\label{fig:multi_hr}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{figures/growth.png}
+		\caption{relative average growth of blockchain \\with standard deviation}
+		\label{fig:multi_hr_growth}
+	\end{subfigure}
+	\caption{Simulations $RegRan$ Setup, multiple hashrates, Comparison between peer $0$ executing honest and selfish mining}
+	\label{fig:mhr}
 \end{figure}
-Figure~\ref{fig:multi_hr} shows the revenue gain for $25\% $, $30\%$, $35\% $, $40\% $ and $45\% $ relative compuational power. Figure~\ref{fig:multi_hr} shows that for selfish mining the revenue gain is strictly below zero, while for honest mining it is above zero. This shows that in this scenario honest mining is outperforming selfish mining. Increasing the relative computational power also increases revenue gain for the selfish miner. In contrast the small revenue gain of the honest miner remains constant. Looking at the standard deviation the revenue gain seems to be wide spread. Nonetheless, this contradicts the results of \cauth{eyal} since they showed a strict revenue increase for $\alpha > 33\% $. Since $\alpha$ can be seen as the fraction of blocks a miner produces it is directly linked to the relative computational power this miner possesses. Thus, according to \cauth{eyal} Figure~\ref{fig:multi_hr} should be positive for the relative compuational power greater than $33\% $.
+Figure~\ref{fig:multi_hr} shows the revenue gain for relative compuational power between $25\% $ and $45\% $. Figure~\ref{fig:multi_hr} shows that for selfish mining the revenue gain is on average below zero except for $45\% $ relative computational power. For honest mining it is above zero. This shows that in this scenario honest mining is outperforming selfish mining. Increasing the relative computational power also increases revenue gain for the selfish miner. The small revenue gain of the honest miner increases as well, but only very slightly. The revenue gain has a greater standard deviation for the selfish miner than for the honest miner. Especially for the selfish miner revenue gain is wide spread. Nonetheless, the results contradict the \cauth{eyal} since the authors showed a strict revenue increase for $\alpha > 33\% $. Since $\alpha$ can be seen as the fraction of blocks a miner produces it is directly linked to the relative computational power this miner possesses. Thus, according to \cauth{eyal} Figure~\ref{fig:multi_hr} should be positive for the relative compuational power greater than $33\% $, which is very clearly not the case.\\
+The overall growth of the blockchain is influenced by the selfish mining protocol, as is visualized in \ref{fig:multi_hr_growth}. Growth is the length of longest chain divided by the number of produced blocks. In an ideal case the growth of the blockchain is $1$ for a complete honest network. However, network effects result in a growth $~93\% $ even in a total honest network. This also explains the revenue gain of the honest miner. Since the blockchain contains fork a peer producing a large amount of blocks, will gain more revenue than its relative share. We can observe as well that selfish mining lowers the overall growth of the blockchain, as expected. For the setup containing the selfish miner the overall growth remains constant at around $82\% $. Note, that the growth reduction seems to be independent of the relative share of computational power the selfish miner possesses, at least for relative computational powers between $25-45\% $.\\
+Selfish mining in an homogenous network setting does not result in a revenue gain compared to honest mining.
 
-
-
+\ifx
 \newpage
 \textcolor{red}{Ab hier, TODO}
 \subsection{Selfish Mining with Networking Advantage}
@@ -220,7 +211,7 @@ The green bars represent the betweeness centrality of the selfish miner. The bet
 We can further observe that the revenue gain, shown in red, is highest for $k=0$. This is understandable since at $k=0$ the selfish miner can effectively eclipse every peer. The selfish miner is in total control over the information flow. For $k=1$ and $k=2$ revenue gain begins decreasing towards $0$ revenue gain. At $k=1$ and $k=2$ the selfish miner can still eclipse parts of the network but since overall connectedness increases, it becomes harder for the selfish miner to effectively eclipse every peer in the network. For $k>2$ revenue gain still seems to be slightly above $0$ which suggests that selfish mining is profitable.
 
 
-
+\fi
 
 
 
