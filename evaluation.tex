@@ -9,14 +9,14 @@ The Selfish Rumor Model consists mainly of four parts.
 \item Block Arrival Process representation
 \item Communication Process representation
 \end{itemize}
-The network graph is represented by an adjacency matrix. The blockchain representation is a set of blocks and a set of edges for each peer, which are developing over time. The block arrival process and the communication process are modelled as a Poisson process~\cite{poisson}. This is mirrored in a Simpy process with an exponentially distributed interarrival time between scheduled events.
+The network graph is represented by an adjacency matrix. The blockchain representation is a set of blocks and a set of edges for each peer, which are developing over time. The block arrival process and the communication process are modeled as a Poisson process~\cite{poisson}. This is mirrored in a Simpy process with an exponentially distributed interarrival time between scheduled events.
 On each event of the block arrival process a block arrives at a random peer. This means that the event triggered by the block arrival process updates the blockchain datastructure accordingly.
 At each event of the communication process $T_i$ a peer $p_i$ tries to update a certain peer $p_j$ according to the epoch associated with the event. This results in a comparison between the datastructures associated with $p_i$ and $p_j$ and an update of $p_j$, if it is possible.
 
-Even though the basic implementation is simple, there are various parameters which influence the system behaviour greatly. The following list shall give an overview:
+Even though the basic implementation is simple, there are various parameters which influence the system behavior greatly. The following list shall give an overview:
 \begin{itemize}
 \item Average of interarrival times - This is the rate of block arrival process and communication process trigger events. 
-\item Topology of the network graph - The network resulting from the adjacency matrix has a great influence on the bahviour of the system.
+\item Topology of the network graph - The network resulting from the adjacency matrix has a great influence on the behavior of the system.
 \item Block selection - In a scenario, where multiple blocks could be transferred from one peer to another, one block has to be selected. How this block is selected influences system baviour.
 \item Network size - This is the number of peers.
 \item Mining power distribution - The mining power distribution influences the peer selection. Peer selection is the process of deciding which peer gets the new block once the block arrival process triggers an event.
@@ -147,6 +147,14 @@ Networking effects and selfish mining can be analyzed from a global and a local 
 Figure~\ref{fig:multi_hr} shows the revenue gain for relative compuational power between $25\% $ and $45\% $. Figure~\ref{fig:multi_hr} shows that for selfish mining the revenue gain is on average below zero except for $45\% $ relative computational power. For honest mining it is above zero. This shows that in this scenario honest mining is outperforming selfish mining. Increasing the relative computational power also increases revenue gain for the selfish miner. The small revenue gain of the honest miner increases as well, but only very slightly. The revenue gain has a greater standard deviation for the selfish miner than for the honest miner. Especially for the selfish miner revenue gain is wide spread. Nonetheless, the results contradict the \cauth{eyal} since the authors showed a strict revenue increase for $\alpha > 33\% $. Since $\alpha$ can be seen as the fraction of blocks a miner produces it is directly linked to the relative computational power this miner possesses. Thus, according to \cauth{eyal} Figure~\ref{fig:multi_hr} should be positive for the relative compuational power greater than $33\% $, which is very clearly not the case.\\
 The overall growth of the blockchain is influenced by the selfish mining protocol, as is visualized in \ref{fig:multi_hr_growth}. Growth is the length of longest chain divided by the number of produced blocks. In an ideal case the growth of the blockchain is $1$ for a complete honest network. However, network effects result in a growth $~93\% $ even in a total honest network. This also explains the revenue gain of the honest miner. Since the blockchain contains fork a peer producing a large amount of blocks, will gain more revenue than its relative share. We can observe as well that selfish mining lowers the overall growth of the blockchain, as expected. For the setup containing the selfish miner the overall growth remains constant at around $82\% $. Note, that the growth reduction seems to be independent of the relative share of computational power the selfish miner possesses, at least for relative computational powers between $25-45\% $.\\
 Selfish mining in an homogenous network setting does not result in a revenue gain compared to honest mining.
+
+\subsection{Selfish Mining with Network Advantage}
+Selfish Mining in a homogenous network is not beneficial. Therefore, analysis is conducted in network settings, where the selfish miner possesses a network advantage. 
+
+
+
+
+
 
 \ifx
 \newpage
