@@ -27,17 +27,10 @@ The above discussed parameters can be modified in order to capture different sys
 In the following section the Simpy Blockchain Simulator is validated against synthetic experiments published by the original authors of the blockchain gossip model. Additionally real world data from Bitcoin will be additionally used to validate the legitimacy of the Simpy Blockchain Simulator. This will lay the foundation for further analysis concerning the network and selfish mining. 
 \subsection{Validation of Simulator against~\cauth{gopalan}}\label{gopalananalysis}
 In the synthetic data experiments of~\cauth{gopalan}~they analyze the the network for 10, 20 and 30 peers. The network topology is a complete graph. Thus, the adjacency matrix is the unit matrix. 
-The authors introduce four key metrics to analyze the system. Those are 
-\begin{itemize}
-\item Time to Consistency --- The average time an inconsistent system needs to reach a state of consistency
-\item Cycle Length --- The sum of the average time to consistency and the average of the time the system stays consistent
-\item Consistency Fraction --- The average fraction of peers that are consistent at each point in time
-\item Age of Information --- The average number of blocks an average peer is away from the consistency state
-\end{itemize}
+The authors introduce four key metrics to analyze the system. Time to Consistency as the average time an inconsistent system needs to reach a state of consistency. Cycle Length as the sum of the average time to consistency and the average of the time the system stays consistent. Consistency Fraction as the average fraction of peers that are consistent at each point in time. Age of Information as the average number of blocks an average peer is away from the consistency state. \\
 All metrics mentioned above refer to the term consistency. The Consistency is defined as $B_G(t)$~\ref{unisondef}, the unison of all blocks produced by the block arrival process $A$.
 In order to evaluate to capture the same system, that was analyzed by the authors, the parameters are setup similar.
 These metrics can be used to verify whether the Simpy Blockchain Simulator is achieving similar numbers to the implementation of~\cauth{gopalan}. As for the parameter setup the interarrival time of the communication process is set to $1s$. The interarrival time of the block arrival process is a variable. The network topology is a complete graph. In a scenario, where multiple blocks could be transferred from one peer to another the block with the lowest index number is chosen. The network size is set to 10, 20 and 30 peers accordingly. The mining power distribution is uniform.
-
 \begin{figure}[tbp]
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\textwidth]{figures/gopalan_figures/time_to_consistency.png}
@@ -64,13 +57,10 @@ These metrics can be used to verify whether the Simpy Blockchain Simulator is ac
 	\end{subfigure}
 	\caption{Comparison between Simpy Blockchain Simulator and values produced by~\cauth{gopalan}}
 \end{figure} 
-
 The metrics of time to consistency and cycle length are very closely related, because both rely on the time the system needs to reach consistency.
-Figure~\ref{fig:gopalan_ttc} and Figure~\ref{fig:gopalan_cl} show this close relationship. Additionally the comparison between the Simpy Blockchain Simulator shows a very similar tendency in both metrics. Especially in Figure~\ref{fig:gopalan_ttc} it is observable that the curve has the same shape, only flatter. Figure~\ref{fig:gopalan_ttc} shows that peernumber and block arrival rate are proportional to the average time to consistency. Since cycle length is the sum of the average time to consistency and the average of the time the system stays consistent the same behavior can be observed in Figure~\ref{fig:gopalan_cl}. Additionally Figure~\ref{fig:gopalan_cl} shows that for very small numbers for the block arrival rate the cycle length increases again. When the system has a low block arrival rate the system tends to stay longer in a state of consistency, which is due to the fact that the idle time increases.
-
-Consistency fraction and age of information are both metrics measuring the consistency of an average peer. The consistency fraction is the fraction of peers, which have a blockset equal to $B_G(t)$~\ref{unisondef}. For both the simulation results by~\cauth{gopalan}~and the Simpy Blockchain Simulator we can observe, that the consistency fraction decreases with an increasing blockrate and peer number. While the exact numbers do differ, similar shapes can again be observed.
+Figure~\ref{fig:gopalan_ttc} and Figure~\ref{fig:gopalan_cl} show this close relationship. Additionally the comparison between the Simpy Blockchain Simulator shows a very similar tendency in both metrics. Especially in Figure~\ref{fig:gopalan_ttc} it is observable that the curve has the same shape, only flatter. Figure~\ref{fig:gopalan_ttc} shows that peernumber and block arrival rate are proportional to the average time to consistency. Since cycle length is the sum of the average time to consistency and the average of the time the system stays consistent the same behavior can be observed in Figure~\ref{fig:gopalan_cl}. Additionally Figure~\ref{fig:gopalan_cl} shows that for very small numbers for the block arrival rate the cycle length increases again. When the system has a low block arrival rate the system tends to stay longer in a state of consistency, which is due to the fact that the idle time increases.\\
+Consistency fraction and age of information are both metrics measuring the consistency of an average peer. The consistency fraction is the fraction of peers, which have a blockset equal to $B_G(t)$~\ref{unisondef}. For both the simulation results by~\cauth{gopalan}~and the Simpy Blockchain Simulator we can observe, that the consistency fraction decreases with an increasing blockrate and peer number. While the exact numbers do differ, similar shapes can again be observed.\\
 The age of information metric analyzes how much an average peer differs from $B_G(t)$~\ref{unisondef}. It showcases an increase for an increasing blockrate and peer number.
-
 The differences indicate that information spreads faster in the Simpy Blockchain Simulator. After a brief discussion with~\cauth{gopalan}, they confirmed that this might be due to the fact, that in the simpy version communication processes are handled truly concurrently.	
 
 \subsection{Validation of Simulator against Bitcoin data}
@@ -78,7 +68,7 @@ This section validates the model against a real world blockchain system, the Bit
 \cauth{neudecker-atc16} monitor the Bitcoin network and obtain data of, for example, the current block propagation delay distribution~\cite{BitcoinNetworkMonitor}. Since the model can be used to analyze blocks and their propagation, the current block propagation delay distribution is a suitable metric to compare the Selfish Rumor Model against the real world system.\\
 Bitcoin block propagation has two distinct characteristics. The distribution has a high peak at around $~400ms$ and a significant long tail, with block delays going up to $30s$. Since the whole dataset contains many outliers, $5\% $ of the largest delays are filtered out. This data is then used to match parameter setups of the Selfish Rumor Model against Bitcoin and find setups offering a similar block propagation.\\
 To achieve a similar block propagation one can mainly analyze the topology of the network graph and the communication process rate.
-The current Bitcoin network has an unknown topology. The original protocol described an algorithm, where a peer tries to maintain at least 8 connections~\cite{tschorsch}. This would result in a random regular graph as network topology. However, analysis of the Bitcoin network comes to a different conclusion.
+The current Bitcoin network has an unknown topology. The original protocol described an algorithm, where a peer tries to maintain at least 8 connections~\cite{tschorsch}. This would result in a random regular graph as network topology. However, analysis of the Bitcoin network comes to a different conclusion.\\
 For example \cauth{baumann2014exploring} found strong indicators for a scale-free degree distribution.
 Additionally, the FIBRE network and Compact Blocks were introduced to enable faster block propagation~\cite{measurement}. This results in a network topology, which cannot be captured by single graph representation.\\
 Since the Selfish Rumor Model uses one single graph representation the objective is to utilize a topology and minimize the Root-Mean-Square-Error(RMSE). The RMSE is the standard deviation of the prediction errors~\cite{RMSE}. Since the Selfish Rumor Model Simulator can predict block propagation of Bitcoin, we can measure the error compared to Bitcoins block propagation utilizing the RMSE. Therefore, either a regular random graph or a scale free graph should be chosen as a network topology for the Selfish Rumor Model. 
@@ -110,23 +100,23 @@ Since the Selfish Rumor Model uses one single graph representation the objective
 \label{fig:SMRBitcoin}
 \end{figure}
 Figure~\ref{fig:SMRBitcoin} shows the most important results of various experiments carried out to minimize the RMSE between the simulations and Bitcoin. It also offers a comparison between the scale-free topology shown as orange and the regular random topology shown as blue. Since both topologies differ only in the degree distribution, we can compare both by their average degree respectively. All block delays were grouped in $1ms$ steps. All setups were repeated 100 times to ensure statistical significance.\\
-Figure~\ref{fig:RMSE} shows the RMSE for 16, 32, 68, 100, 140 degrees and various communication process rates in comparison to Bitcoin. The lowest RMSE, $0.00016$, was achieved by 100-regular-random graph with a communication process rate of $35ms$. This parameter setup is referred to as $RegRan$. 
+Figure~\ref{fig:RMSE} shows the RMSE for 16, 32, 68, 100, 140 degrees and various communication process rates in comparison to Bitcoin. The lowest RMSE, $0.00016$, was achieved by 100-regular-random graph with a communication process rate of $35ms$. This parameter setup is referred to as $RegRan$.\\
 In Addition the results for a 16- and 32-regular-random graph are also shown in Figure~\ref{fig:RMSE}. A 32 degree regular random graph is used by~\cauth{gopalan}~to evaluate against Bitcoin data. However, the RMSE-values are significantly higher than those of the 100-regular-random graph. This is most likely due to the usage of the FIBRE relay network and Compact Blocks in Bitcoin, which decreases block propagation delay. Additionally, all curves have a clear tendency towards a specific communication rate minimizing the RMSE.\\
-This is also the case for scale-free networks, as is visualized in Figure~\ref{fig:RMSEBar}. For each topology there is one minimum communication rate, minimizing the RMSE against Bitcoin block propagation delay distribution. The scale-free network is generated over the Barabasi-Albert model~\cite{BarabasiAlbert}. This algorithm has three determining parameters. The number of vertices, $m$ for the number of edges generated for each vertex and a power factor. Since the lowest RMSE was always achieved for the power factor $2$ Figure~\ref{fig:RMSEBar} shows only the RMSE for power $2$.
+This is also the case for scale-free networks, as is visualized in Figure~\ref{fig:RMSEBar}. For each topology there is one minimum communication rate, minimizing the RMSE against Bitcoin block propagation delay distribution. The scale-free network is generated over the Barabasi-Albert model~\cite{BarabasiAlbert}. This algorithm has three determining parameters. The number of vertices, $m$ for the number of edges generated for each vertex and a power factor. Since the lowest RMSE was always achieved for the power factor $2$ Figure~\ref{fig:RMSEBar} shows only the RMSE for power $2$.\\
 The lowest achieved RMSE, $0.00018$, for scale free networks was for an average of 16 m, a power factor of 2 and a communication process rate of 40ms. This parameter setup is referred to as $ScaFre$.\\
 Both topologies achieve quite low RMSE values. However, Figure~\ref{fig:minRMSE} visualizes the difference between the minimum RMSE values achieved for each average degree for both random regular and scale free graphs.
 Regular random graphs lower the RMSE values for an increasing average degree, until an average degree of 80. Above an average degree of 80 the RMSE values remain quite constant.\\
 The analyzation of parameter setups for scale free networks is more complex. Scale-free networks, in terms of the Barabasi-Albert model, have the parameter m, which can be used to control the average degree of the network. Additionally scale-free networks have a power factor, which controls the preferential attachment process. Since 4 different power factors were analyzed for each setup, Figure~\ref{fig:minRMSE} visualizes 4 datapoints above each other for each average degree. We can observe that for $m=16$ and for $m=32$ the achieved RMSE values are the lowest for power factor 2 and a communication process rate of 40ms.\\
 Figure~\ref{fig:SRMBitcoin2} visualizes the block propagation distribution from the Selfish Rumor Model for both tested topologies in their minimum configuration and Bitcoin. The regular random graph models the peak closer. The scale free network cannot model the peak as good as the regular random network, but the curve shows more distinctly the longtail behavior. The better model for lower delays achieves a better RMSE value, since lower delays contain much more data points. Since data points above 1500ms are rare for Bitcoin, the exact modelling of the long tail does not impact the RMSE value as much. Nonetheless, both parameter setups are valuable to establish a validated Selfish Rumor Model Setup.\\
 We conclude this section by establishing two parameter setups. The minimum configuration for regular random networks is called $RegRan$ and the minimum configuration for scale-free networks is called $ScaFre$. Both are discussed in their differences in the above chapter exhaustively. However, there are also characteristics both share.\\
-The interarrival time of the block arrival process is set to 600s. In a scenario, where multiple blocks could be transferred from one peer to another the block with the earliest arrival time is chosen. The number of peers is set to 500 and the mining power distribution is exponential. Additionally Simulations are always carried out 100 times to ensure statistical significance.\\
+The interarrival time of the block arrival process is set to 600s. In a scenario, where multiple blocks could be transferred from one peer to another the block with the earliest arrival time is chosen. The number of peers is set to 500 and the mining power distribution is exponential. Additionally Simulations are always carried out 100 times to ensure statistical significance.
 Those parameter setups, $RegRan$ and $ScaFre$ are used for following evaluations.
 
 \section{Selfish Mining and Networking Effects}
 Networking effects and selfish mining can be analyzed from a global and a local point of view, cf. Table~\ref{keyfactors}. The system analysis introduced by~\cauth{gopalan}~assesses the system mainly in terms of consistency and blockchain growth, as discussed in the previous section. Both, blockchain growth and consistency, are influenced by adversarial mining strategies such as selfish mining. Additionally, selfish mining is influenced by networking factors.
 
 \subsection{Selfish Mining in homogeneous Network Setting}
-\cauth{eyal} discovered a relationship between the relative computational power and the resulting $revenue~gain$. They described that an increase in networking propagation factor and relative computational power results in an increased $revenue~gain$. Additionally to the metrics of $revenue~gain$ and network propagation factor $\gamma$ we introduce two other metrics. Those are $growth$ and $forkrate$. $growth$ describes the length of the blockchain relative to the number of produced blocks and $forkrate$ describes the number of forks relative to the number of blocks~\cite{BlockPropOld}. A high $growth$ means that most produced blocks end up in the longest chain. If the $forkrate$ is significantly smaller than $1-growth$ this implies that forks tend to contain many blocks. If it is close to equal forks are mostly consisting of one block.\\
+\citeauthor{eyal}~\cite{eyal} discovered a relationship between the relative computational power and the resulting $revenue~gain$. They described that an increase in networking propagation factor and relative computational power results in an increased $revenue~gain$. Additionally to the metrics of $revenue~gain$ and network propagation factor $\gamma_{hr}$ we introduce two other metrics. Those are $growth$ and $fork~rate$. $growth$ describes the length of the blockchain relative to the number of produced blocks and $fork~rate$ describes the number of forks relative to the number of blocks~\cite{BlockPropOld}. A high $growth$ means that most produced blocks end up in the longest chain. If the $fork~rate$ is significantly smaller than $1-growth$ this implies that forks tend to contain many blocks. If it is close to equal forks are mostly consisting of one block.\\
 In a homogeneous network every peer has the same degree and the same bandwidth. Such a network setup is the $RegRan$ setup and it can be used to analyze selfish mining in a scenario without any networking advantage.
 \begin{figure}[tbp]
 	 \begin{subfigure}[b]{0.5\textwidth}
@@ -144,13 +134,12 @@ In a homogeneous network every peer has the same degree and the same bandwidth. 
 	\label{fig:mhr}
 \end{figure}
 Figure~\ref{fig:multi_hr} shows the $revenue~gain$ for relative computational power between $25\% $ and $45\% $. Figure~\ref{fig:multi_hr} shows that for selfish mining the $revenue~gain$ is on average below zero except for $45\% $ relative computational power. For honest mining it is above zero. This shows that in this scenario honest mining is outperforming selfish mining. Increasing the relative computational power also increases $revenue~gain$ for the selfish miner. The small $revenue~gain$ of the honest miner increases as well, but only very slightly. The $revenue~gain$ has a greater standard deviation for the selfish miner than for the honest miner. Especially for the selfish miner $revenue~gain$ is wide spread. Nonetheless, the results contradict the \cauth{eyal} since the authors showed a strict revenue increase for $\alpha > 33\% $. Since $\alpha$ can be seen as the fraction of blocks a miner produces it is directly linked to the relative computational power this miner possesses. Thus, according to \cauth{eyal} Figure~\ref{fig:multi_hr} should be positive for the relative compuational power greater than $33\% $, which is very clearly not the case.\\
-The overall $growth$ of the blockchain is influenced by the selfish mining protocol, as is visualized in \ref{fig:multi_hr_growth}. $growth$ is the length of longest chain divided by the number of produced blocks. In an ideal case the $growth$ of the blockchain is $1$ for a complete honest network. However, network effects result in a $growth$ $~93\% $ even in a total honest network. This also explains the $revenue~gain$ of the honest miner. Since the blockchain contains fork a peer producing a large amount of blocks, will gain more revenue than its relative share. We can observe as well that selfish mining lowers the overall $growth$ of the blockchain, as expected. For the setup containing the selfish miner the overall $growth$ remains constant at around $82\% $. Note, that the $growth$ reduction seems to be independent of the relative share of computational power the selfish miner possesses, at least for relative computational powers between $25-45\% $.
+The overall $growth$ of the blockchain is influenced by the selfish mining protocol, as is visualized in \ref{fig:multi_hr_growth}. $growth$ is the length of longest chain divided by the number of produced blocks. In an ideal case the $growth$ of the blockchain is $1$ for a complete honest network. However, network effects result in a $growth$ $~93\% $ even in a total honest network. This also explains the $revenue~gain$ of the honest miner. Since the blockchain contains forks, a peer producing a large amount of blocks will gain more revenue than its relative share. We can observe as well that selfish mining lowers the overall $growth$ of the blockchain, as expected. For the setup containing the selfish miner the overall $growth$ remains constant at around $82\% $. Note, that the $growth$ reduction seems to be independent of the relative share of computational power the selfish miner possesses, at least for relative computational powers between $25-45\% $.
 Selfish mining in an homogeneous network setting does not result in a $revenue~gain$ compared to honest mining.
 
 \subsection{Selfish Mining with Network Advantage}
 Selfish Mining in a homogeneous network is not beneficial. Therefore, analysis is conducted in network settings, where the selfish miner possesses a network advantage. In the following evaluations peer $0$ will possess a network advantage. This peer executes selfish and honest mining. This allows us to compare the impacts of networking advantage on honest and selfish mining. In the following experiments the selfish miner possesses a relative computational power of $45\% $.
-The $RegRan$ setup utilizes a regular random graph as network topology. Increasing degree and accelerating communication process rate results in a networking advantage. 
-
+The $RegRan$ setup utilizes a regular random graph as network topology. Increasing degree and accelerating communication process rate results in a networking advantage.
 \begin{figure}[tbp]
 	 \begin{subfigure}[b]{\textwidth}
 		\includegraphics[width=\textwidth]{figures/sm_edge_new_revenue.pdf}
@@ -160,119 +149,91 @@ The $RegRan$ setup utilizes a regular random graph as network topology. Increasi
 	\hfill
 	\begin{subfigure}[b]{\textwidth}
 		\includegraphics[width=\textwidth]{figures/sm_edge_new_gamma.pdf}
-		\caption{Network Propagation Factor $\gamma$}
+		\caption{Network Propagation Factor $\gamma_{hr}$}
 		\label{fig:sm_edge_gamma}
 	\end{subfigure}
 \end{figure}
-
 \begin{figure}[tbp]
 \ContinuedFloat
 \begin{subfigure}[b]{\textwidth}
 		\includegraphics[width=\textwidth]{figures/sm_edge_new_growth_and_forkrate.pdf}
-		\caption{Growth and Forkrate}
+		\caption{Growth and Fork~rate}
 		\label{fig:growth_fork}
 	\end{subfigure}
 \caption{Simulations $RegRan$ Setup with Network Advantage for honest mining(hm) and selfish mining(sm), Different Communication Process Rates Advantages}
-	\label{fig:sm_edge_new}
-
+\label{fig:sm_edge_new}
 \end{figure}
 Figure~\ref{fig:sm_edge_new} visualizes experiments with network advantage. We consider Peer $0$ executing both mining strategies and alter his network parameters. The main metric to analyze mining protocols is $revenue~gain$, which is visualized in \ref{fig:sm_edge_rev}. We can observe that selfish mining results in a more spread out $revenue~gain$ than honest mining. Additionally to an increased degree the communication process rate was increased by an advantage factor, which is shown in the legend. We can observe that for almost all cases a higher advantage factor results in more $revenue~gain$. We can also observe that increasing degree does not necessarily result in an increased $revenue~gain$, in fact it may even result in a revenue loss. This is an intuitive result since in a real system splitting bandwidth between an increasing number of connections may at one point result in an overall worse performance. However, increasing both advantage factor and degree results in an overall increased $revenue~gain$.\\
-Figure~\ref{fig:sm_edge_gamma} visualizes the network propagation factor $\gamma$. It is a metric only applicable to selfish mining, since it analyzes contest situation. It shows the fraction of the network receiving the selfish miner block before the contestant block. If we compare Figure~\ref{fig:sm_edge_gamma} and \ref{fig:sm_edge_rev} we observe a clear correlation between an increasing $\gamma$ and $revenue~gain$. The curve for the $5$-times advantage factor even visualizes that if $\gamma$ stagnates, the $revenue~gain$ does so as well. The $2.5$-times advantage factor curve shows at $300$ degree, that if $\gamma$ drops significantly below $50\% $, the selfish mining $revenue~gain$ drops below the honest mining $revenue~gain$.\\
-Honest mining is mostly unaffected by changes in advantage factor, but very much affected by changes to the degree of the miner. However, in comparison to the $revenue~gain$ of the selfish miner the honest miner $revenue~gain$ is quite constant. The honest miner shows the highest $revenue~gain$ for a degree less than the network average. This $revenue~gain$ quickly decreases until $150$ were it starts increasing again. If we observe $growth$ and $forkrate$ in Figure~\ref{fig:growth_fork} we can see that for the degree $50$ and $100$ the $growth$ of the blockchain is the highest and constant for the honest miner scenarios. For degrees larger than $100$ the $growth$ starts rapidly decreasing. We observe the inverse behavior for the $forkrate$. Since the $forkrate$ is close to $1-growth$ the forks are very small and we can not observe a network consensus partition. For a degree greater than $150$ we can find a relationship between increasing $revenue~gain$ due to decreasing $growth$. Since the relative computational power of the miner is $45\% $ he profits from a decreased $growth$. However, the increased $revenue~gain$ for degree $50$ and $100$ with a relatively high $growth$ of $94\% $ implies that there exists a $growth$ threshold were the honest miner benefits from a better growth. We presume, that relatively more of his blocks are included in the blockchain if the growth surpasses a certain threshold.\\
-The selfish miner scenarios show mostly a very similar low $growth$ and high $forkrate$. For lower advantage factors $growth$ decreases correlate to a decreased $revenue~gain$. This is most likely due to the fact, that the selfish miner can not effectively push his blocks in the main chain of the blockchain, resulting in a decreased $growth$ and increased $forkrate$.\\
-However, independent of mining strategy we observe $forkrate \approx 1-growth$ which implies that for both mining strategies we only observe small forks.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\ifx
-Figure~\ref{fig:sm_edge} visualizes the results of experiments analyzing the performance of selfish mining in the $RegRan$ Setup, when the selfish miner possesses a network advantage. The network advantage was achieved by increasing degree and communication process rate of the selfish miner.
-The most important metric to measure the impact of selfish mining is revenue or $revenue~gain$. Figure~\ref{fig:sm_edge_rev} visualizes revenue gain of the peer with different network advantages for both honest and selfish mining. For honest mining the revenue gain remains quite constant with any increase of network advantage. However, the smallest degree achieved the highest revenue gain. For selfish mining we observe a revenue gain for an increased networking advantage compared to honest mining. Selfish mining outperforms honest mining with more than 50 additional edges and a communication rate five times faster or more. Additionally simply increasing the communication rate can result in an increased revenue gain compared to honest mining. However simply increasing degree may also result in lowering revenue gain. Increasing degree of a peer results in a longer round robin time the peer needs to traverse all edges. This can result in a higher time for block publishing and receiving. Since fast communication is key to selfish mining, increasing degree of the selfish miner can result in suboptimal performance.
-This phenomenon is also captured by Figure~\ref{fig:sm_edge_gamma}, which visualizes the network propagation factor $\gamma$. We can observe that an increase in degree without a significant increase in communication process rate results in a decreased $\gamma$. However, increasing both degree and communication process rate results in increased $\gamma$ values up to $72\% $. We can additionally observe by comparing Figure~\ref{fig:sm_edge_rev} and Figure~\ref{fig:sm_edge_gamma} that a $\gamma$ value of more than $50\% $ is correlated to a revenue gain higher than honest mining.
-Figure~\ref{fig:sm_edge_growth} visualizes the growth of the blockchain. We can observe that in a system without a selfish miner the blockchain grows faster. Increasing networking advantage results in decreased growth for the honest miner. Increasing degree of the selfish miner results in decreased growth as well. However, increasing communication process rate in addition to degree for the selfish miner results in a constant growth.
-\fi
-
-
-
-\ifx
-\newpage
-\textcolor{red}{Ab hier, TODO}
-\subsection{Selfish Mining with Networking Advantage}
-
-topological advantage, and "bandwidth"
-
-"trying to make selfish mining work"
-\subsection{On Achievability of Networking Advantage}
-betweeness centrality discussion
-\subsection{Selfish Mining and Global Network Characteristics}
-vllt das ans ende?	
-
-mainly focus on growth? growth analyse war leider bisher etwas enttäuschend
-
-This section will analyze how global system behavior changes when peers executing selfish mining are introduced to the system. In Section~\ref{gopalananalysis} the Simpy Blockchain Simulator was verified against the results published by~\cauth{gopalan}. The authors analyzed the blockchain system from a global perspective using metrices based on growth and block propagation. Thus, those base metrices will be first used to analyze the global state with adversarial miners.
-
-\textcolor{red}{TODO: vgl. zwischen sm und nicht etc.}
-
-Selfish mining leads to intentional forks in the blockchain.
-
-  
-
-
-
-
-
-
-\subsection{Networking effects impacting selfish mining}
-Central to this thesis remains the question how impactful network effects are on the performance of selfish mining. The comparison of local and global factors from a single peer point of view can be utilized to describe a networking advantage this peer possesses.
-Selfish mining is executed in order to gain revenue. Revenue gain can be measured by comparing the actual revenue to the relative computational power of the peer.
-\subsubsection{Computational Power and Selfish Mining}
-
-
-\subsubsection{Network Advantage and Selfish Mining}
-Key aspects determining networking characteristics of a specific peer are his location relative to the network and his bandwidth, while key factors on a global scale are topology, network size and bandwidth distribution, as described in Table~\ref{keyfactors}. If for example all peers in the network possess the same amount of bandwidth, increasing the bandwidth of the selfish miner will put him at a network advantage.
-If the network topology is described as a $k$-random regular graph, then allowing the selfish miner to connect to more then $k$ peers will result in a networking advantage. This topological factor can be measured by graph metrices, such as betweeness centrality.
-
-\paragraph{Betweeness Centrality}
-If revenue gain is positively correlated to network advantage, than a goal of a selfish miner should be to increase his network advantage. As discussed before one can analyze the resulting networking advantage utilizing network metrices such as betweeness centrality.
-\begin{figure}[ht]
-	\includegraphics[width=\textwidth]{figures/betweeness_centrality.png}
-	\caption{Betweeness centrality for various k-random-regular graphs for an all-connected peer $0$}
-	\label{fig:bet_cent}
+Figure~\ref{fig:sm_edge_gamma} visualizes the network propagation factor $\gamma_{hr}$. It is a metric only applicable to selfish mining, since it analyzes contest situations. It shows the fraction of the network receiving the selfish miner block before the contestant block. If we compare Figure~\ref{fig:sm_edge_gamma} and \ref{fig:sm_edge_rev} we observe a clear correlation between an increasing $\gamma_{hr}$ and $revenue~gain$. The curve for the $5$-times advantage factor even visualizes that if $\gamma_{hr}$ stagnates, the $revenue~gain$ does so as well. The $2.5$-times advantage factor curve shows at $300$ degree, that if $\gamma_{hr}$ drops significantly below $50\% $, the selfish mining $revenue~gain$ drops below the honest mining $revenue~gain$.\\
+Honest mining is mostly unaffected by changes in advantage factor, but very much affected by changes to the degree of the miner. However, in comparison to the $revenue~gain$ of the selfish miner the honest miner $revenue~gain$ is quite constant. The honest miner shows the highest $revenue~gain$ for a degree less than the network average. This $revenue~gain$ quickly decreases until $150$ were it starts increasing again. If we observe $growth$ and $fork~rate$ in Figure~\ref{fig:growth_fork} we can see that for the degree $50$ and $100$ the $growth$ of the blockchain is the highest and constant for the honest miner scenarios. For degrees larger than $100$ the $growth$ starts rapidly decreasing. We observe the inverse behavior for the $fork~rate$. Since the $fork~rate$ is close to $1-growth$ the forks are very small and we can not observe a network consensus partition. For a degree greater than $150$ we can find a relationship between increasing $revenue~gain$ due to decreasing $growth$. Since the relative computational power of the miner is $45\% $ he profits from a decreased $growth$. However, the increased $revenue~gain$ for degree $50$ and $100$ with a relatively high $growth$ of $94\% $ implies that there exists a $growth$ threshold were the honest miner benefits from a better growth. We presume, that relatively more of his blocks are included in the blockchain if the growth surpasses a certain threshold.\\
+The selfish miner scenarios show mostly a very similar low $growth$ and high $fork~rate$. For lower advantage factors $growth$ decreases correlate to a decreased $revenue~gain$. This is most likely due to the fact, that the selfish miner can not effectively push his blocks in the main chain of the blockchain, resulting in a decreased $growth$ and increased $fork~rate$. However, independent of mining strategy we observe $fork~rate \approx 1-growth$ which implies that for both mining strategies we only observe small forks.
+\begin{figure}[tbp]
+	 \begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{figures/sm_edge_revenue_barabasi.pdf}
+		\caption{Revenue Gain}
+		\label{fig:sm_edge_rev_bara}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{figures/sm_edge_gamma_barabasi.pdf}
+		\caption{Network Propagation Factor $\gamma_{hr}$}
+		\label{fig:sm_edge_gamma_bara}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{figures/sm_edge_growth_barabasi.pdf}
+		\caption{Growth}
+		\label{fig:growth_bara}
+	\end{subfigure}
 \end{figure}
-Figure~\ref{fig:bet_cent} visualizes the betweeness centrality of one peer in various k-random-regular graphs. This specific peer, peer $0$, is connected to all other nodes. The rest of the graph follows a random-regular structure. The x-axis visualizes the increasing $k$ of the k-random-regular graph. As $k$ increases the betweeness centrality of peer $0$ decreases. For smaller node amounts the decrease is faster than for bigger node amounts. This is due to the absolut increase in $k$ since a 20-regular-random graph of 100 peers is better connected than a 20-regular-random graph of 1100 peers. Better connected means in this case it is closer to a fully connected graph. The closer the graph gets to being fully connected the more the central role of peer $0$ decreases, since the number of alternative paths between any other two peers rises. Nonetheless, Figure~\ref{fig:bet_cent} shows the upper limit for peer $0$. This means that in general a peer has to connect to a large amount of peers, compared to the network average in order to obtain any networking advantage.
+\begin{figure}[tbp]
+\ContinuedFloat
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{figures/sm_edge_forkrate_barabasi.pdf}
+		\caption{Fork Rate}
+		\label{fig:fork_bara}
+	\end{subfigure}
+\caption{Simulations $ScaFre$ Setup with Network Advantage for honest mining(hm) and selfish mining(sm), Different Communication Process Rates Advantages}
+\label{fig:sm_edge_barabasi}
+\end{figure}\\
+Figure~\ref{fig:sm_edge_barabasi} visualizes the results of network advantage simulations carried out in the $ScaFre$ parameter setup. To achieve a network advantage for peer $0$, we removed the edges, that were constructed through the Barabasi-Albert Algorithm and then connected Peer $0$ to a new amount of peers. The strategies to connect peer $0$ are uniformly at random and according to betweenness centrality. Betweenness centrality is a measure to express how central a node is in a given graph. It is the number of shortest paths that pass through the node\cite{bcent}.\\
+Overall we cannot observe a major difference between the measured metrics in Figure~\ref{fig:sm_edge_barabasi} between both peer selection strategies. Figure~\ref{fig:sm_edge_rev_bara} shows the $revenue~gain$ for honest mining and selfish mining for both strategies. For selfish mining we see a similar dependence of $revenue~gain$ to increasing degree and communication process rate advantage as in the $RegRan$ setup. Selfish mining results in a more spread out $revenue~gain$ than honest mining. An increase in both degree and communication process rate results in a higher revenue gain. If degree and communication process rate surpass a certain threshold, selfish mining produces more revenue gain than honest mining. This threshold is at least a 30-times faster communication process rate and a degree of 250 or higher for both strategies.\\
+We also see the same clear correlation between an increasing $\gamma_{hr}$ and $revenue~gain$. A $\gamma_{hr}$ significantly higher than $50\% $ results in a significant $revenue~gain$ for the selfish miner. As expected the highest $\gamma_{hr}$ results in the highest $revenue~gain$ for the selfish miner.\\
+A major difference to the $RegRan$ setup is the $revenue~gain$ of the honest miner in the $ScaFre$ setup. The honest miner has a very high $revenue~gain$ with low degrees, which decreases as degree increases. This is in contrast to the $RegRan$ experiments where  $revenue~gain$ remained quite constant with changing degrees for the honest miner. However, in both setups $revenue~gain$ for the honest miner is independent of communication process rate advantage. We observe the highest $revenue~gain$ of $~0.045$ to be at 10-degrees for the honest miner.\\
+Figure\ref{fig:growth_bara} and Figure\ref{fig:fork_bara} visualize both $growth$ and $fork~rate$. Both metrics are quite constant for both peer selection strategies and as expected selfish mining leads to a lower $growth$ and higher $fork~rate$. Additionally changes in degree as well as communication process rate advantage do not change $growth$ or $fork~rate$ significantly. This is true for both peer selection strategies and for selfish mining as well as honest mining. Compared to $RegRan$, $ScaFre$ experiments seem to have an overall lower $growth$ and higher $fork~rate$. The relationship of $fork~rate \approx 1-growth$ remains. Communication process rate advantage changes result in a more spread out $growth$ and $fork~rate$ for selfish mining in the $RegRan$ setup. However, this behavior is not visible in the $ScaFre$ setups.\\
+The question remains why honest mining results for low degrees in such a high $revenue~gain$ and drops for higher degrees. An overall revenue gain of the honest miner can be attributed to the low $growth$ of the blockchain. However, since $growth$ remains constant it can not be correlated to changing $revenue~gain$.
+\begin{figure}[tbp]
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{figures/sm_edge_blockprop_barabasi.pdf}
+		\caption{$ScaFre$ simulation setup}
+		\label{fig:blockprop_bara}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{figures/sm_edge_block_prop_rr_and_bc_dc.pdf}
+		\caption{$RegRan$ and $ScaFre$- exponential distributed communication process rate simulation setup}
+		\label{fig:blockprop_2}
+	\end{subfigure}
+\caption{Block Propagation delay of Blocks mined by Peer $0$}
+\label{fig:blockprops}
+\end{figure}\\
+Figure\ref{fig:blockprop_bara} shows the  block propagation delay of blocks mined by peer $0$ for the $ScaFre$ simulation setup. Especially for honest mining we can see an increasing block propagation delay for an increasing degree. Since blocks of peer $0$ need more time to propagate through the network it is less likely that those blocks will be part of the main chain. This results in a revenue loss. For selfish mining we observe a similar behavior. Selfish mining with no communication process rate advantage shows the least amount of revenue gain. We also observe a very high block propagation delay for 10-degree in the betweenness centrality selected simulations. We deduce that high centrality peers in this setup are a bottleneck. In the $ScaFre$ setup every peer has the same average communication process rate. This results in a higher average time to cover all edges for a peer with a higher degree. Thus, this peer becomes a bottleneck and it is not beneficial to connect to those peers with the highest centrality. This also explains why it is beneficial for the selfish miner to have a higher degree once he has a communication process rate advantage, since then he can effectively use multiple parallel paths to propagate his blocks faster. We also see this behavior in Figure~\ref{fig:blockprops} since for communication process rate advantages and higher degrees the selfish miner achieves lower block propagation delays.\\
+For the $RegRan$ block propagation delays we observe a more diverse picture. For an increased degree and communication process rate advantage we observe lower block propagation times for the selfish miner. For the honest miner we observe the minimal block propagation at 100-degrees. The overall block propagation delay is higher than in the $ScaFre$ experiments for the honest miner, which would explain the reduced revenue gain. This leads to the assumption that for honest mining a lower block propagation delay is correlated to a higher revenue gain.\\
+Figure~\ref{fig:blockprop_2} visualizes the block propagation delay for a modified $ScaFre$ setup. In $ScaFre$ node degrees are exponentially distributed, but the communication process rate is constant. To further evaluate if central nodes become bottlenecks the modified $ScaFre$ setup scales communication process rate distribution to degree distribution. A high degree node with the same communication process rate as a low degree node needs more time to cover all of his connections. The modified $ScaFre$ setup scales communication process rates in such a way, that the average round trip time remains the same, independent of node degree.
+\begin{figure}[tbp]
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{figures/revenue_gamma_barabasi_bc_dc.pdf}
+		\caption{Revenue Gain and Gamma}
+		\label{fig:revgain_bc_dc}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{figures/growth_forkrate_barabasi_bc_dc.pdf}
+		\caption{Growth and Forkrate}
+		\label{fig:growth_bc_dc}
+	\end{subfigure}
+\caption{Simulations $ScaFre$ with exponential Communication Rate Distribution Setup with Network Advantage for honest mining(hm) and selfish mining(sm), Different Communication Process Rates Advantages}
+\label{fig:bc_dc}
+\end{figure}\\
+Figure~\ref{fig:blockprop_2} shows the block propagation delay for peer $0$ in this modified topology. We observe that the honest miner can transmit his blocks faster. Overall the system seems more stable since $growth$ is higher than in $RegRan$ and $ScaFre$ and the $fork~rate$ is lower. This is visualized in \ref{fig:growth_bc_dc}. Figure~\ref{fig:revgain_bc_dc} visualizes $revenue~gain$ and $\gamma_{HR}$. The honest miner has a lower and constant $revenue~gain$ compared to previous experiments. This in conjunction with the higher $growth$ implies that the network is more stable in this modified version. The selfish miner experiences a lowered $revenue~gain$ as well. However, we do not observe lower values of $\gamma_{HR}$. The reduced $revenue~gain$ must therefore be a result of the increased $growth$ and reduced $fork~rate$. This seems intuitive because as stated by \cauth{eyal} selfish mining benefits from an increased number of forks.\\
+To sum up we observe major key relations between different system parameters. Selfish mining does in fact produce an increased revenue if network advantage and relative hashrate exceed a certain threshold. In fact we observe a revenue gain up to $0.052$ for a high network advantage. For a relative hashrate of $45\% $ we observe the needed network advantage to consist of an increased bandwidth by a factor 5 to 25 and the ability to establish more connections. The actual threshold highly depends on the topology and overall characteristic of the rest of the network. We observe that selfish mining is more effective in a system with a reduced growth of the blockchain. Additionally a relationship of $growth \approx 1-fork~rate$ is clearly visible, which implies that forks mainly consist of 1 block. Honest mining produces an increased revenue as well. For the tested high relative hashrate of $45\% $ honest mining produced a revenue gain between $0.01$ and $0.045$. Additionally we see that the produced revenue of honest mining highly depends on the performance of the rest of the network. This is in contrast to selfish mining. While selfish mining also depends on the rest of the network, revenue can increase by increasing bandwidth and degree of the selfish miner. Overall we see a high dependence between the performance of selfish mining and network advantage of the peer executing the attack.
 
-\subsubsection{Topological Networking Advantage}
-It can be assumed that a peer with a higher degree than the network average possesses a networking advantage. Thus, raising the degree of the selfish miner puts him at a topological networking advantage. We can then estimate the actual networking advantage based on the betweeness centrality and $\gamma$ of the peer. 
-\begin{figure}[ht]
-		\includegraphics[width=\textwidth]{figures/full_sm_multi_degree_200rev_and_bpr_per_peer.png}
-		
-\caption{Betweeness Centrality, Revenue Gain and Network Propagation Factor, Topological Advantage Simulations with 200 Peers}
-\label{fig:top_adv200}
-\end{figure}
-
-Figure~\ref{fig:top_adv200} shows results of experiments, which were based on analyzing the impact of topological network advantage. The experiments were carried out with 100, 200 and 300 peers respectively. Figure~\ref{fig:top_adv200} shows the results of the simulations for 200 peers, since no significant difference could be observed between 100, 200 and 300 peers simulations. The selfish miner possessed a relative computational power of $45\% $ while the rest was exponentially distributed on the remaining network. The interarrival time for communication process events was set to $1s$. The interarrival time for the block arrival process was set to $100s$. The selfish miner was connected to all peers. The rest of the network topology formed a $k$-random-regular graph, with an increasing $k$ shown in the x-axis.
-
-The green bars represent the betweeness centrality of the selfish miner. The betweenness centrality of the selfish miner decreases as $k$ increases. The blue bar represents $\gamma$. We can observe that for each categroy of peer amounts $\gamma$ is slightly highest for $k \in \{0,1,2\}$ and is rather constant for $k>2$. $\gamma$  constant at around $0.55$ even though the betweeness centrality drops for increasing $k$'s. Thus, it is likely that $\gamma$ and  betweeness centrality are not correlated.
-
-We can further observe that the revenue gain, shown in red, is highest for $k=0$. This is understandable since at $k=0$ the selfish miner can effectively eclipse every peer. The selfish miner is in total control over the information flow. For $k=1$ and $k=2$ revenue gain begins decreasing towards $0$ revenue gain. At $k=1$ and $k=2$ the selfish miner can still eclipse parts of the network but since overall connectedness increases, it becomes harder for the selfish miner to effectively eclipse every peer in the network. For $k>2$ revenue gain still seems to be slightly above $0$ which suggests that selfish mining is profitable.
-
-
-\fi
 
 
 
@@ -281,14 +242,4 @@ We can further observe that the revenue gain, shown in red, is highest for $k=0$
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+ 
