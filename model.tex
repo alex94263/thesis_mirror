@@ -16,7 +16,7 @@ Consensus is established over the longest chain rule~\cite{1}. This means that t
 A miner produces a share of blocks proportionally to his relative share of computational power of the whole network. Thus, a miner should produce a share of the main chain proportional to his relative share of computational power.
 
 The original protocol, in the following also referred to as honest mining, assumes publishing blocks immediately after mining. Honest mining is assumed to be incentive compatible~\cite{1}. It follows, that no miner can earn disproportionate rewards by deviating from the protocol.
-Consequently, earning disproportionate rewards through deviation from the honest mining protocol would disprove Bitcoin's incentive compatability claim.
+Consequently, earning disproportionate rewards through deviation from the honest mining protocol would disprove Bitcoin's incentive compatibility claim.
 
 \section{Selfish Mining}\label{eyalmodel}
 One protocol deviation is selfish mining, which was first introduced by \citeauthor{eyal}~\cite{eyal}.
@@ -41,11 +41,11 @@ The selfish miner withholds mined blocks~\cite{eyal}. This selfish miner now pos
 \end{tikzpicture}
 }
 \end{center}
-   \caption{Abstract representation of state transtitions of eyal and sirer model for one selfish miner}
+   \caption{Abstract representation of state transitions of \cauth{eyal} model for one selfish miner}
 \label{fig:eyal_model}
 
 \end{figure}
-For clarification the state space and actions are modelled in Figure~\ref{fig:eyal_model}. The numbers in the states indicate the lead of the private to the public chain, where $s$ denotes the lead of the private chain compared to the public chain. We can identify a total of five different actions.
+For clarification the state space and actions are modeled in Figure~\ref{fig:eyal_model}. The numbers in the states indicate the lead of the private to the public chain, where $s$ denotes the lead of the private chain compared to the public chain. We can identify a total of five different actions.
 \begin{itemize}
 \item $Mining$: This action means that the peer has mined a block. Mining adds the block to the private chain. It therefore causes $s$ to increase.
 \item $Lead$ $Publish$: When $s$ increases to 2, the selfish miner will publish his private chain. It therefore causes $s$ to change from 2 to 0.
@@ -61,7 +61,7 @@ Executing this protocol leads to a strict revenue increase, if the mining power 
 
 \section{Blockchain Gossip Model}\label{gopalan}
 The Blockchain Gossip Model of \citeauthor{gopalan} consists of a set of peers $P$ connected through a peer-to-peer network. Peers add blocks to the blockchain through a process called mining. 
-The peer-to-peer network is modelled as an undirected Graph $H = (V,E)$.
+The peer-to-peer network is modeled as an undirected Graph $H = (V,E)$.
 An edge $(i,j) \in E$ represents communication possibilities between $v_i \in V$ and $v_j \in V$. 
 The set of vertices is finite, such that $|V|=N \in \mathbb{N}$.
 Vertices are associated with peers, such that $v_i$ represents peer $p_i \in P$.
@@ -92,11 +92,11 @@ $G_{p_i}(t)$ evolves over time. Blocks arrive over continuous time according to 
 This models peer $p_i$ mining block $b$ at time $t$ and that at this time the block is also added to $B_{G_{p_i}}(t)$.
 References are added to $E_{G_{p_i}}(t)$ according to policy and depending on $G_{p_i}(t^-)$, where $t^-$ is a moment in time infinitesimally before $t$. $O_i$ denotes the set of outgoing neighbors of block $i$.
 
-The communication is modelled as a marked point process $T_{p_i}$.
+The communication is modeled as a marked point process $T_{p_i}$.
 Each mark corresponds to another peer $p_j \in P\backslash \{p_i\}$.
 In an epoch peer $p_i$ contacts $p_j$ and thus, adds the lowest numbered block of $B_{p_i}(t)\backslash B_{p_j}(t)$ to the set of Vertices $B_{p_j}$. If $B_{p_i}(t)\backslash B_{p_j}(t)$ is not empty, $E_{p_j}$ is also updated accordingly.
 
-The peer-to-peer network dynamics are modelled as a continuous time rumor-spreading process with exogenous arrivals~\citep{gopalan}. Since communication is bound to the process $T_{p_i}$, the block dissemination is bandwidth limited.
+The peer-to-peer network dynamics are modeled as a continuous time rumor-spreading process with exogenous arrivals~\citep{gopalan}. Since communication is bound to the process $T_{p_i}$, the block dissemination is bandwidth limited.
 Reference selection and thus $O_{p_i}$ is chosen according to longest chain policies~\citep{gopalan}.
 Let $L_{p_i}(t)$ denote the set of blocks farthest away from the genesis block $0$, known to peer $p_i$ at time $t$.
 \begin{equation}
@@ -118,8 +118,8 @@ Every block will have exactly one outgoing reference, according to a determinist
 	\textbf{Key Elements}		&\textbf{Short Description}\\
 	\hline
 	$G_{p_i}(t)$				& \footnotesize Blockchain graph representation consisting of $(B_{G_{p_i}}(t),E_{G_{p_i}}(t))$ for every peer, time variant\\
-	$B_{G_{p_i}}(t)$			& \footnotesize Blockset of each peer, time variant\\
-	$E_{G_{p_i}}(t))$			& \footnotesize Edgeset of each peer, time variant \\
+	$B_{G_{p_i}}(t)$			& \footnotesize Block set of each peer, time variant\\
+	$E_{G_{p_i}}(t))$			& \footnotesize Edge set of each peer, time variant \\
 	$T_{p_i}$					& \footnotesize The communication process for each peer, sends blocks from $p_i$ outwards\\
 	$L_{p_i}(t)$				& \footnotesize The set of blocks farthest away from the genesis block\\
 	\hline
